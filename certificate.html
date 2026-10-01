@@ -1,1030 +1,1396 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Certificate ❤️</title>
+<meta charset="UTF-8">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
 
-    <style>
+<title>Certificate of Appreciation</title>
 
-        /* =====================================================
-           RESET
-        ===================================================== */
+<style>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+/* =========================================================
+   RESET
+========================================================= */
 
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        body {
-            background: #f7f2eb;
-            font-family: Georgia, "Times New Roman", serif;
-        }
-
-
-        /* =====================================================
-           WORLD
-        ===================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        .world {
-            position: fixed;
-            inset: 0;
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
 
-            width: 100vw;
-            height: 100vh;
+body {
+    overflow: hidden;
 
-            overflow: hidden;
-
-            background:
-                radial-gradient(
-                    circle at 18% 22%,
-                    rgba(100, 90, 85, 0.045) 0 1px,
-                    transparent 1.5px
-                ),
-                radial-gradient(
-                    circle at 82% 72%,
-                    rgba(100, 90, 85, 0.045) 0 1px,
-                    transparent 1.5px
-                ),
-                #f7f2eb;
-        }
+    background: #f7f2eb;
 
+    color: #4a3026;
+}
 
-        /* =====================================================
-           FRAME
-        ===================================================== */
 
-        .frame {
-            position: fixed;
-            inset: 7px;
+/* =========================================================
+   WORLD
+========================================================= */
 
-            border: 1px solid rgba(116, 20, 35, 0.45);
+.world {
+    position: fixed;
 
-            pointer-events: none;
+    inset: 0;
 
-            z-index: 200;
-        }
+    width: 100vw;
+    height: 100dvh;
 
+    overflow: hidden;
 
-        /* =====================================================
-           BACKGROUND DECOR
-        ===================================================== */
+    background:
+        radial-gradient(
+            circle at 18% 22%,
+            rgba(100, 90, 85, 0.045) 0 1px,
+            transparent 1.5px
+        ),
+        radial-gradient(
+            circle at 82% 72%,
+            rgba(100, 90, 85, 0.045) 0 1px,
+            transparent 1.5px
+        ),
+        #f7f2eb;
+}
 
-        .background-decor {
-            position: absolute;
-            inset: 0;
 
-            pointer-events: none;
+/* =========================================================
+   BACKGROUND SYMBOLS
+========================================================= */
 
-            opacity: 0.23;
-        }
+.symbols {
+    position: absolute;
 
-        .bg-symbol {
-            position: absolute;
+    inset: 0;
 
-            color: #756d69;
+    pointer-events: none;
 
-            user-select: none;
-        }
+    overflow: hidden;
+}
 
-        .symbol-1 {
-            top: 12%;
-            left: 10%;
-            font-size: 20px;
-        }
+.symbol {
+    position: absolute;
 
-        .symbol-2 {
-            top: 17%;
-            right: 12%;
-            font-size: 17px;
-        }
+    color: rgba(91, 76, 68, 0.075);
 
-        .symbol-3 {
-            bottom: 18%;
-            left: 14%;
-            font-size: 18px;
-        }
+    font-family: Georgia, serif;
 
-        .symbol-4 {
-            bottom: 13%;
-            right: 10%;
-            font-size: 20px;
-        }
+    user-select: none;
+}
 
-        .symbol-5 {
-            top: 48%;
-            left: 4%;
-            font-size: 12px;
-        }
+.s1 {
+    top: 12%;
+    left: 9%;
+    font-size: 17px;
+}
 
-        .symbol-6 {
-            top: 56%;
-            right: 5%;
-            font-size: 13px;
-        }
+.s2 {
+    top: 23%;
+    right: 11%;
+    font-size: 12px;
+}
 
+.s3 {
+    bottom: 18%;
+    left: 13%;
+    font-size: 18px;
+}
 
-        /* =====================================================
-           CERTIFICATE STAGE
-        ===================================================== */
+.s4 {
+    bottom: 11%;
+    right: 12%;
+    font-size: 15px;
+}
 
-        .certificate-stage {
-            position: absolute;
-            inset: 0;
+.s5 {
+    top: 65%;
+    right: 6%;
+    font-size: 11px;
+}
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+.s6 {
+    top: 42%;
+    left: 5%;
+    font-size: 11px;
+}
 
-            padding: 30px;
 
-            z-index: 10;
-        }
+/* =========================================================
+   FRAME
+========================================================= */
 
+.frame {
+    position: fixed;
 
-        /* =====================================================
-           CERTIFICATE
-        ===================================================== */
+    inset: 7px;
 
-        .certificate {
-            position: relative;
+    border:
+        1px solid
+        rgba(116, 20, 35, 0.45);
 
-            width: min(1000px, 92vw);
+    pointer-events: none;
 
-            aspect-ratio: 1.55 / 1;
+    z-index: 200;
+}
 
-            max-height: 78vh;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #fffdf7,
-                    #f8f0df 50%,
-                    #fffdf7
-                );
+/* =========================================================
+   CERTIFICATE STAGE
+========================================================= */
 
-            border: 2px solid #7a1a2b;
+.stage {
+    position: fixed;
 
-            box-shadow:
-                0 20px 45px rgba(55, 34, 27, 0.18),
-                0 5px 12px rgba(55, 34, 27, 0.10);
+    inset: 0;
 
-            display: flex;
+    width: 100%;
+    height: 100dvh;
 
-            align-items: center;
-            justify-content: center;
+    display: flex;
 
-            padding: 28px;
-        }
+    flex-direction: column;
 
+    align-items: center;
+    justify-content: center;
 
-        /* =====================================================
-           DOUBLE BORDER
-        ===================================================== */
+    /*
+       The gap is deliberately controlled here.
+       The button will NEVER be pushed below the screen.
+    */
 
-        .certificate::before {
-            content: "";
+    gap: clamp(12px, 2.2vh, 22px);
 
-            position: absolute;
-            inset: 13px;
+    padding:
+        max(18px, env(safe-area-inset-top))
+        18px
+        max(18px, env(safe-area-inset-bottom))
+        18px;
 
-            border: 1px solid #b38a42;
+    z-index: 10;
+}
 
-            pointer-events: none;
-        }
 
-        .certificate::after {
-            content: "";
+/* =========================================================
+   CERTIFICATE
+========================================================= */
 
-            position: absolute;
-            inset: 19px;
+.certificate {
+    position: relative;
 
-            border: 1px solid rgba(122, 26, 43, 0.65);
+    width: min(900px, 90vw);
 
-            pointer-events: none;
-        }
+    /*
+       Instead of allowing the certificate to become
+       arbitrarily tall, its height is tied to the viewport.
+    */
 
+    height: min(
+        64vh,
+        calc(100dvh - 145px)
+    );
 
-        /* =====================================================
-           CORNERS
-        ===================================================== */
+    min-height: 0;
 
-        .corner {
-            position: absolute;
+    aspect-ratio: 1.55 / 1;
 
-            color: #a07a38;
+    flex-shrink: 1;
 
-            font-size: clamp(25px, 4vw, 42px);
+    background:
+        linear-gradient(
+            135deg,
+            #fffdf7 0%,
+            #f8f0df 50%,
+            #fffdf7 100%
+        );
 
-            line-height: 1;
+    border:
+        2px solid
+        #7a1a2b;
 
-            z-index: 2;
-        }
+    box-shadow:
+        0 20px 45px rgba(55, 34, 27, 0.18),
+        0 5px 12px rgba(55, 34, 27, 0.10);
 
-        .top-left {
-            top: 22px;
-            left: 26px;
-        }
+    display: flex;
 
-        .top-right {
-            top: 22px;
-            right: 26px;
+    flex-direction: column;
 
-            transform: scaleX(-1);
-        }
+    align-items: center;
+    justify-content: center;
 
-        .bottom-left {
-            bottom: 22px;
-            left: 26px;
+    text-align: center;
 
-            transform: scaleY(-1);
-        }
+    padding:
+        clamp(25px, 4vw, 55px);
 
-        .bottom-right {
-            bottom: 22px;
-            right: 26px;
+    overflow: hidden;
 
-            transform: scale(-1);
-        }
+    opacity: 0;
 
+    transform:
+        scale(0.97)
+        translateY(8px);
 
-        /* =====================================================
-           CERTIFICATE CONTENT
-        ===================================================== */
+    transition:
+        opacity 0.8s ease,
+        transform 0.9s cubic-bezier(.22,.8,.24,1);
+}
 
-        .certificate-content {
-            position: relative;
+.certificate.visible {
 
-            z-index: 3;
+    opacity: 1;
 
-            width: 88%;
+    transform:
+        scale(1)
+        translateY(0);
+}
 
-            text-align: center;
 
-            color: #382d29;
-        }
+/* =========================================================
+   INNER BORDERS
+========================================================= */
 
+.certificate::before {
 
-        .certificate-title {
-            color: #741626;
+    content: "";
 
-            font-size: clamp(30px, 5vw, 57px);
+    position: absolute;
 
-            font-weight: normal;
+    inset: 11px;
 
-            letter-spacing: 8px;
+    border:
+        1px solid
+        #b38a42;
 
-            line-height: 1;
-        }
+    pointer-events: none;
+}
 
-        .certificate-subtitle {
-            margin-top: 8px;
+.certificate::after {
 
-            color: #8c6a37;
+    content: "";
 
-            font-size: clamp(10px, 1.5vw, 15px);
+    position: absolute;
 
-            letter-spacing: 5px;
+    inset: 17px;
 
-            text-transform: uppercase;
-        }
+    border:
+        1px solid
+        rgba(122, 26, 43, 0.65);
 
+    pointer-events: none;
+}
 
-        /* =====================================================
-           DIVIDER
-        ===================================================== */
 
-        .divider {
-            display: flex;
+/* =========================================================
+   ORNAMENTS
+========================================================= */
 
-            align-items: center;
-            justify-content: center;
+.corner {
+    position: absolute;
 
-            gap: 12px;
+    z-index: 2;
 
-            width: 70%;
+    font-family: Georgia, serif;
 
-            margin: 20px auto 17px;
-        }
+    color: #8a6730;
 
-        .divider-line {
-            flex: 1;
+    font-size:
+        clamp(20px, 4vw, 34px);
+}
 
-            height: 1px;
+.corner.tl {
+    top: 18px;
+    left: 21px;
+}
 
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    #b38a42,
-                    transparent
-                );
-        }
+.corner.tr {
+    top: 18px;
+    right: 21px;
+}
 
-        .divider-symbol {
-            color: #8a2336;
+.corner.bl {
+    bottom: 18px;
+    left: 21px;
+}
 
-            font-size: 17px;
-        }
+.corner.br {
+    bottom: 18px;
+    right: 21px;
+}
 
 
-        /* =====================================================
-           PRESENTED TO
-        ===================================================== */
+/* =========================================================
+   CERTIFICATE CONTENT
+========================================================= */
 
-        .presented {
-            color: #625652;
+.certificate-content {
 
-            font-size: clamp(11px, 1.5vw, 16px);
+    position: relative;
 
-            letter-spacing: 2px;
+    z-index: 3;
 
-            text-transform: uppercase;
-        }
+    width: 100%;
 
+    display: flex;
 
-        /* =====================================================
-           RECIPIENT
-        ===================================================== */
+    flex-direction: column;
 
-        .recipient {
-            margin-top: 8px;
+    align-items: center;
 
-            color: #741626;
+    justify-content: center;
+}
 
-            font-family:
-                "Brush Script MT",
-                "Segoe Script",
-                "Lucida Handwriting",
-                cursive;
 
-            font-size: clamp(31px, 5.5vw, 65px);
+.title {
 
-            font-weight: normal;
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
 
-            line-height: 1.1;
-        }
+    font-size:
+        clamp(22px, 4.5vw, 44px);
 
-        .name-heart {
-            margin-top: 2px;
+    letter-spacing:
+        clamp(2px, 0.7vw, 6px);
 
-            color: #741626;
+    font-weight: 700;
 
-            font-size: 16px;
-        }
+    color: #7a1a2b;
 
+    margin-bottom: 2px;
+}
 
-        /* =====================================================
-           APPRECIATION
-        ===================================================== */
 
-        .appreciation {
-            max-width: 690px;
+.subtitle {
 
-            margin: 13px auto 0;
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
 
-            color: #514541;
+    font-size:
+        clamp(11px, 2vw, 17px);
 
-            font-size: clamp(12px, 1.6vw, 17px);
+    letter-spacing: 3px;
 
-            line-height: 1.6;
-        }
+    color: #6c554b;
 
-        .appreciation-script {
-            margin-top: 7px;
+    margin-bottom:
+        clamp(8px, 2vh, 17px);
+}
 
-            color: #741626;
 
-            font-family:
-                "Segoe Script",
-                "Lucida Handwriting",
-                cursive;
+/* divider */
 
-            font-size: clamp(14px, 2vw, 21px);
+.divider {
 
-            line-height: 1.35;
-        }
+    width:
+        min(280px, 58%);
 
+    display: flex;
 
-        /* =====================================================
-           BOTTOM CERTIFICATE DETAILS
-        ===================================================== */
+    align-items: center;
 
-        .certificate-bottom {
-            display: flex;
+    justify-content: center;
 
-            justify-content: space-between;
-            align-items: flex-end;
+    gap: 10px;
 
-            margin-top: 20px;
+    margin-bottom:
+        clamp(9px, 2vh, 18px);
+}
 
-            padding: 0 35px;
-        }
+.divider-line {
 
+    flex: 1;
 
-        /* SIGNATURE */
+    height: 1px;
 
-        .signature {
-            text-align: center;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #b38a42
+        );
+}
 
-            min-width: 150px;
-        }
+.divider-line.right {
 
-        .signature-line {
-            width: 145px;
+    background:
+        linear-gradient(
+            90deg,
+            #b38a42,
+            transparent
+        );
+}
 
-            height: 1px;
+.divider-symbol {
 
-            margin-bottom: 5px;
+    color: #9a7334;
 
-            background: #6a5751;
-        }
+    font-size:
+        clamp(13px, 2.5vw, 20px);
+}
 
-        .signature-script {
-            color: #741626;
 
-            font-family:
-                "Brush Script MT",
-                "Segoe Script",
-                cursive;
+/* presented to */
 
-            font-size: 20px;
-        }
+.presented {
 
-        .signature-label {
-            margin-top: 2px;
+    font-family:
+        Georgia,
+        serif;
 
-            color: #756864;
+    font-size:
+        clamp(9px, 1.8vw, 14px);
 
-            font-size: 9px;
+    letter-spacing:
+        clamp(1px, 0.4vw, 3px);
 
-            letter-spacing: 2px;
+    color: #715b52;
 
-            text-transform: uppercase;
-        }
+    margin-bottom:
+        clamp(5px, 1.2vh, 10px);
+}
 
 
-        /* =====================================================
-           APPROVED STAMP
-        ===================================================== */
+/* name */
 
-        .stamp {
-            width: 82px;
-            height: 82px;
+.recipient {
 
-            border: 2px solid #8a2336;
+    font-family:
+        "Brush Script MT",
+        "Segoe Script",
+        cursive;
 
-            border-radius: 50%;
+    font-size:
+        clamp(27px, 6vw, 54px);
 
-            display: flex;
+    line-height: 1;
 
-            align-items: center;
-            justify-content: center;
+    color: #7a1a2b;
 
-            text-align: center;
+    white-space: nowrap;
 
-            color: #8a2336;
+    margin-bottom:
+        clamp(4px, 1vh, 8px);
+}
 
-            font-size: 8px;
 
-            font-weight: bold;
+.recipient-heart {
 
-            letter-spacing: 1px;
+    color: #9a1d36;
 
-            transform: rotate(-10deg);
+    font-size:
+        clamp(13px, 2.5vw, 20px);
 
-            opacity: 0.82;
-        }
+    margin-bottom:
+        clamp(7px, 1.6vh, 14px);
+}
 
-        .stamp-inner {
-            width: 66px;
-            height: 66px;
 
-            border: 1px solid #8a2336;
+/* appreciation text */
 
-            border-radius: 50%;
+.description {
 
-            display: flex;
+    width:
+        min(690px, 82%);
 
-            align-items: center;
-            justify-content: center;
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
 
-            padding: 9px;
-        }
+    font-size:
+        clamp(10px, 1.8vw, 15px);
 
+    line-height: 1.48;
 
-        /* =====================================================
-           RIGHT DETAIL
-        ===================================================== */
+    color: #4d3a33;
+}
 
-        .issued {
-            text-align: center;
+.description p + p {
 
-            min-width: 150px;
-        }
+    margin-top:
+        clamp(4px, 1vh, 9px);
+}
 
-        .issued-heart {
-            color: #8a2336;
 
-            font-size: 17px;
-        }
+/* =========================================================
+   BOTTOM AREA
+========================================================= */
 
-        .issued-text {
-            margin-top: 3px;
+.bottom {
 
-            color: #756864;
+    width:
+        min(680px, 83%);
 
-            font-size: 9px;
+    display: flex;
 
-            letter-spacing: 2px;
+    align-items: flex-end;
 
-            text-transform: uppercase;
-        }
+    justify-content: space-between;
 
+    margin-top:
+        clamp(8px, 1.8vh, 15px);
+}
 
-        /* =====================================================
-           TAP TO CONTINUE
-           
-           This sits BELOW the certificate and only appears
-           after the certificate has been revealed.
-        ===================================================== */
 
-        .continue-area {
-            position: absolute;
+.signature {
 
-            left: 50%;
+    text-align: left;
 
-            bottom: 5.5%;
+    font-family:
+        "Brush Script MT",
+        "Segoe Script",
+        cursive;
 
-            transform:
-                translateX(-50%)
-                translateY(12px);
+    color: #7a1a2b;
 
-            opacity: 0;
+    font-size:
+        clamp(17px, 3vw, 27px);
 
-            z-index: 20;
+    line-height: 1.05;
+}
 
-            transition:
-                opacity 0.9s ease,
-                transform 0.9s cubic-bezier(0.2, 0.75, 0.25, 1);
+.signature small {
 
-            pointer-events: none;
-        }
+    display: block;
 
-        .continue-area.visible {
-            opacity: 1;
+    margin-top: 4px;
 
-            transform:
-                translateX(-50%)
-                translateY(0);
+    font-family:
+        Georgia,
+        serif;
 
-            pointer-events: auto;
-        }
+    font-size:
+        clamp(7px, 1.3vw, 10px);
 
-        .continue-button {
-            appearance: none;
+    letter-spacing: 2px;
 
-            border: 1px solid rgba(116, 22, 38, 0.65);
+    color: #735f56;
+}
 
-            background: rgba(247, 242, 235, 0.86);
 
-            color: #741626;
+/* stamp */
 
-            padding: 10px 25px;
+.stamp {
 
-            border-radius: 999px;
+    width:
+        clamp(58px, 10vw, 82px);
 
-            font-family:
-                Georgia,
-                "Times New Roman",
-                serif;
+    height:
+        clamp(58px, 10vw, 82px);
 
-            font-size: 11px;
+    border:
+        1px solid
+        rgba(122, 26, 43, 0.75);
 
-            letter-spacing: 3px;
+    border-radius: 50%;
 
-            cursor: pointer;
+    display: flex;
 
-            box-shadow:
-                0 4px 15px rgba(90, 40, 40, 0.08);
+    align-items: center;
+    justify-content: center;
 
-            transition:
-                background 0.25s ease,
-                color 0.25s ease,
-                transform 0.25s ease,
-                box-shadow 0.25s ease;
-        }
+    text-align: center;
 
-        .continue-button:hover {
-            background: #741626;
+    font-family:
+        Georgia,
+        serif;
 
-            color: #fffaf5;
+    font-size:
+        clamp(6px, 1.1vw, 9px);
 
-            transform: translateY(-2px);
+    line-height: 1.35;
 
-            box-shadow:
-                0 7px 18px rgba(90, 40, 40, 0.16);
-        }
+    letter-spacing: 0.5px;
 
-        .continue-button:active {
-            transform: translateY(0) scale(0.97);
-        }
+    color: #7a1a2b;
 
+    transform: rotate(-8deg);
+}
 
-        /* =====================================================
-           PAGE-TO-PAGE FADE
-           
-           When TAP TO CONTINUE is pressed, we fade the
-           certificate page out before loading Penguin.
-           
-           This keeps the transition feeling intentional.
-        ===================================================== */
 
-        .page-exit {
-            opacity: 0;
+.boyfriend-day {
 
-            transition: opacity 0.45s ease;
+    text-align: right;
 
-            pointer-events: none;
-        }
+    font-family:
+        Georgia,
+        serif;
 
+    color: #7a1a2b;
 
-        /* =====================================================
-           CURTAIN SYSTEM
-           
-           EXACT SAME SYSTEM AS INDEX.HTML
-        ===================================================== */
+    font-size:
+        clamp(9px, 1.7vw, 14px);
 
-        .curtain-system {
-            position: fixed;
+    line-height: 1.3;
+}
 
-            inset: 0;
+.boyfriend-day span {
 
-            width: 100vw;
-            height: 100vh;
+    display: block;
 
-            overflow: hidden;
+    font-size:
+        clamp(14px, 2.8vw, 21px);
 
-            pointer-events: none;
+    margin-bottom: 2px;
+}
 
-            z-index: 100;
-        }
 
-        .curtain {
-            position: absolute;
+/* =========================================================
+   CONTINUE BUTTON
+========================================================= */
 
-            top: 0;
+.continue-area {
 
-            width: 50vw;
-            height: 100vh;
+    position: relative;
 
-            background:
-                linear-gradient(
-                    90deg,
+    flex-shrink: 0;
 
-                    #4b0613 0%,
-                    #711023 7%,
-                    #a41f37 15%,
-                    #631021 23%,
-                    #a9203a 31%,
-                    #650f20 40%,
-                    #9e1d34 49%,
-                    #5a0b1a 58%,
-                    #941a31 68%,
-                    #640e1e 78%,
-                    #a11e36 88%,
-                    #550816 100%
-                );
+    z-index: 20;
 
-            box-shadow:
-                inset 0 0 35px rgba(0, 0, 0, 0.28),
-                inset 0 0 90px rgba(0, 0, 0, 0.13);
+    display: flex;
 
-            will-change: transform;
-        }
+    justify-content: center;
 
-        .curtain-left {
-            left: 0;
-        }
+    align-items: center;
 
-        .curtain-right {
-            right: 0;
-        }
+    width: 100%;
 
+    min-height: 48px;
+}
 
-        /* Folds */
 
-        .curtain::before {
-            content: "";
+.continue-btn {
 
-            position: absolute;
+    appearance: none;
 
-            inset: 0;
+    border:
+        1px solid
+        rgba(122, 26, 43, 0.72);
 
-            background:
-                linear-gradient(
-                    90deg,
+    background:
+        rgba(255, 250, 244, 0.78);
 
-                    transparent 0%,
-                    rgba(255,255,255,0.08) 9%,
-                    transparent 17%,
+    color: #7a1a2b;
 
-                    rgba(255,255,255,0.06) 29%,
-                    transparent 38%,
+    text-decoration: none;
 
-                    rgba(255,255,255,0.07) 51%,
-                    transparent 61%,
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
 
-                    rgba(255,255,255,0.06) 74%,
-                    transparent 84%,
+    font-size: 14px;
 
-                    rgba(255,255,255,0.05) 94%,
-                    transparent 100%
-                );
-        }
+    letter-spacing: 1.5px;
 
+    padding:
+        12px
+        27px;
 
-        /* Gold hem */
+    min-height: 46px;
 
-        .curtain::after {
-            content: "";
+    min-width: 190px;
 
-            position: absolute;
+    display: inline-flex;
 
-            left: 0;
-            right: 0;
-            bottom: 0;
+    align-items: center;
+    justify-content: center;
 
-            height: 9px;
+    border-radius: 30px;
 
-            background:
-                linear-gradient(
-                    180deg,
-                    #d5b76a,
-                    #a98535,
-                    #e0c67b
-                );
+    box-shadow:
+        0 5px 14px
+        rgba(55, 34, 27, 0.09);
 
-            box-shadow:
-                0 -2px 6px rgba(0, 0, 0, 0.16);
-        }
+    -webkit-tap-highlight-color:
+        transparent;
 
+    touch-action: manipulation;
 
-        /* Opening */
+    cursor: pointer;
 
-        .curtain.open {
-            transition:
-                transform 1.9s cubic-bezier(0.76, 0, 0.18, 1);
-        }
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
 
-        .curtain-left.open {
-            transform: translate3d(-100%, 0, 0);
-        }
+.continue-btn:hover {
 
-        .curtain-right.open {
-            transform: translate3d(100%, 0, 0);
-        }
+    background:
+        rgba(255, 250, 244, 1);
 
+    transform:
+        translateY(-2px);
 
-        /* =====================================================
-           MOBILE
-        ===================================================== */
+    box-shadow:
+        0 8px 18px
+        rgba(55, 34, 27, 0.13);
+}
 
-        @media (max-width: 700px) {
+.continue-btn:active {
 
-            .frame {
-                inset: 5px;
-            }
+    transform:
+        scale(0.96);
 
-            .certificate-stage {
-                padding: 20px;
-            }
+    box-shadow:
+        0 3px 8px
+        rgba(55, 34, 27, 0.10);
+}
 
-            .certificate {
-                width: 94vw;
 
-                aspect-ratio: 1.25 / 1;
+/* =========================================================
+   CURTAINS
+========================================================= */
 
-                max-height: 78vh;
+.curtain-system {
 
-                padding: 24px 18px;
-            }
+    position: fixed;
 
-            .certificate::before {
-                inset: 10px;
-            }
+    inset: 0;
 
-            .certificate::after {
-                inset: 15px;
-            }
+    width: 100vw;
+    height: 100dvh;
 
-            .certificate-content {
-                width: 91%;
-            }
+    overflow: hidden;
 
-            .certificate-title {
-                letter-spacing: 5px;
-            }
+    pointer-events: none;
 
-            .certificate-subtitle {
-                letter-spacing: 3px;
-            }
+    z-index: 100;
+}
 
-            .divider {
-                width: 80%;
 
-                margin: 13px auto;
-            }
+.curtain {
 
-            .appreciation {
-                line-height: 1.45;
-            }
+    position: absolute;
 
-            .certificate-bottom {
-                padding: 0 8px;
+    top: 0;
 
-                margin-top: 12px;
-            }
+    width: 50vw;
+    height: 100dvh;
 
-            .signature,
-            .issued {
-                min-width: 90px;
-            }
+    background:
+        linear-gradient(
+            90deg,
+            #4b0613 0%,
+            #711023 7%,
+            #a41f37 15%,
+            #631021 23%,
+            #a9203a 31%,
+            #650f20 40%,
+            #9e1d34 49%,
+            #5a0b1a 58%,
+            #941a31 68%,
+            #640e1e 78%,
+            #a11e36 88%,
+            #550816 100%
+        );
 
-            .signature-line {
-                width: 90px;
-            }
+    box-shadow:
+        inset 0 0 35px rgba(0,0,0,0.28),
+        inset 0 0 90px rgba(0,0,0,0.13);
 
-            .stamp {
-                width: 65px;
-                height: 65px;
+    will-change: transform;
+}
 
-                font-size: 6px;
-            }
 
-            .stamp-inner {
-                width: 51px;
-                height: 51px;
+.curtain::before {
 
-                padding: 5px;
-            }
+    content: "";
 
-            .continue-area {
-                bottom: 3.5%;
-            }
+    position: absolute;
 
-            .continue-button {
-                padding: 9px 20px;
+    inset: 0;
 
-                font-size: 10px;
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255,255,255,0.08) 10%,
+            transparent 20%,
+            rgba(0,0,0,0.10) 31%,
+            transparent 42%,
+            rgba(255,255,255,0.07) 54%,
+            transparent 67%,
+            rgba(0,0,0,0.10) 80%,
+            transparent 92%
+        );
 
-                letter-spacing: 2.5px;
-            }
-        }
+    pointer-events: none;
+}
 
-    </style>
+
+.curtain::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 9px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #d5b76a,
+            #a98535,
+            #e0c67b
+        );
+
+    box-shadow:
+        0 -2px 6px
+        rgba(0,0,0,0.16);
+}
+
+
+.curtain-left {
+    left: 0;
+}
+
+.curtain-right {
+    right: 0;
+}
+
+
+/* OPEN */
+
+.curtain.open {
+
+    transition:
+        transform
+        1.9s
+        cubic-bezier(0.76, 0, 0.18, 1);
+}
+
+.curtain-left.open {
+
+    transform:
+        translate3d(-100%, 0, 0);
+}
+
+.curtain-right.open {
+
+    transform:
+        translate3d(100%, 0, 0);
+}
+
+
+/* CLOSE */
+
+.curtain.closing {
+
+    transition:
+        transform
+        2.2s
+        cubic-bezier(0.55, 0.08, 0.20, 1);
+}
+
+.curtain-left.closing {
+
+    transform:
+        translate3d(0, 0, 0);
+}
+
+.curtain-right.closing {
+
+    transform:
+        translate3d(0, 0, 0);
+}
+
+
+/* =========================================================
+   MOBILE CERTIFICATE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .stage {
+
+        /*
+           This is the important part:
+           certificate + button together always fit.
+        */
+
+        justify-content: center;
+
+        gap: 13px;
+
+        padding:
+            max(14px, env(safe-area-inset-top))
+            13px
+            max(14px, env(safe-area-inset-bottom))
+            13px;
+    }
+
+
+    .certificate {
+
+        width: 94vw;
+
+        height:
+            min(
+                67vh,
+                calc(100dvh - 125px)
+            );
+
+        aspect-ratio: 1.25 / 1;
+
+        padding:
+            25px 22px;
+    }
+
+
+    .certificate::before {
+        inset: 8px;
+    }
+
+    .certificate::after {
+        inset: 13px;
+    }
+
+
+    .corner {
+        font-size: 20px;
+    }
+
+    .corner.tl {
+        top: 13px;
+        left: 15px;
+    }
+
+    .corner.tr {
+        top: 13px;
+        right: 15px;
+    }
+
+    .corner.bl {
+        bottom: 13px;
+        left: 15px;
+    }
+
+    .corner.br {
+        bottom: 13px;
+        right: 15px;
+    }
+
+
+    .title {
+        font-size: 25px;
+
+        letter-spacing: 3px;
+    }
+
+
+    .subtitle {
+        font-size: 11px;
+
+        letter-spacing: 2px;
+
+        margin-bottom: 8px;
+    }
+
+
+    .divider {
+        width: 62%;
+
+        margin-bottom: 9px;
+    }
+
+
+    .presented {
+        font-size: 9px;
+
+        letter-spacing: 1.5px;
+
+        margin-bottom: 5px;
+    }
+
+
+    .recipient {
+        font-size: 31px;
+
+        margin-bottom: 3px;
+    }
+
+
+    .recipient-heart {
+        font-size: 14px;
+
+        margin-bottom: 7px;
+    }
+
+
+    .description {
+
+        width: 88%;
+
+        font-size: 10.5px;
+
+        line-height: 1.35;
+    }
+
+
+    .description p + p {
+        margin-top: 5px;
+    }
+
+
+    .bottom {
+
+        width: 89%;
+
+        margin-top: 7px;
+    }
+
+
+    .signature {
+        font-size: 17px;
+    }
+
+
+    .signature small {
+        font-size: 7px;
+    }
+
+
+    .stamp {
+
+        width: 55px;
+        height: 55px;
+
+        font-size: 6px;
+    }
+
+
+    .boyfriend-day {
+
+        font-size: 8px;
+    }
+
+
+    .boyfriend-day span {
+        font-size: 13px;
+    }
+
+
+    .continue-btn {
+
+        min-width: 205px;
+
+        min-height: 50px;
+
+        padding:
+            12px
+            25px;
+
+        font-size: 13px;
+    }
+}
+
+
+/* =========================================================
+   VERY SHORT PHONES
+========================================================= */
+
+@media (
+    max-width: 600px
+) and (
+    max-height: 700px
+) {
+
+    .stage {
+        gap: 8px;
+
+        padding:
+            10px
+            12px;
+    }
+
+
+    .certificate {
+
+        height:
+            calc(100dvh - 105px);
+
+        padding:
+            18px 18px;
+    }
+
+
+    .title {
+        font-size: 21px;
+    }
+
+
+    .subtitle {
+        font-size: 9px;
+
+        margin-bottom: 5px;
+    }
+
+
+    .divider {
+        margin-bottom: 5px;
+    }
+
+
+    .presented {
+        font-size: 7px;
+    }
+
+
+    .recipient {
+        font-size: 25px;
+    }
+
+
+    .recipient-heart {
+        margin-bottom: 4px;
+    }
+
+
+    .description {
+        font-size: 8.5px;
+        line-height: 1.25;
+    }
+
+
+    .description p + p {
+        margin-top: 3px;
+    }
+
+
+    .bottom {
+        margin-top: 4px;
+    }
+
+
+    .signature {
+        font-size: 14px;
+    }
+
+
+    .stamp {
+        width: 44px;
+        height: 44px;
+
+        font-size: 5px;
+    }
+
+
+    .boyfriend-day span {
+        font-size: 11px;
+    }
+
+
+    .continue-btn {
+
+        min-height: 44px;
+
+        min-width: 180px;
+
+        font-size: 12px;
+
+        padding:
+            9px
+            20px;
+    }
+}
+
+
+/* =========================================================
+   LANDSCAPE PHONES
+========================================================= */
+
+@media (
+    max-width: 900px
+) and (
+    max-height: 500px
+) {
+
+    .stage {
+
+        flex-direction: row;
+
+        gap: 15px;
+
+        padding:
+            10px
+            20px;
+    }
+
+
+    .certificate {
+
+        width: 76vw;
+
+        height: 88dvh;
+
+        aspect-ratio: auto;
+    }
+
+
+    .continue-area {
+
+        width: auto;
+    }
+
+
+    .continue-btn {
+
+        min-width: 150px;
+    }
+}
+
+</style>
 </head>
 
 
 <body>
 
-    <main class="world" id="page">
 
-        <!-- =================================================
-             FRAME
-        ================================================== -->
+<div class="world">
 
-        <div class="frame"></div>
+    <!-- BACKGROUND -->
 
+    <div class="symbols">
 
-        <!-- =================================================
-             BACKGROUND
-        ================================================== -->
+        <div class="symbol s1">♡</div>
+        <div class="symbol s2">✦</div>
+        <div class="symbol s3">☾</div>
+        <div class="symbol s4">♡</div>
+        <div class="symbol s5">✧</div>
+        <div class="symbol s6">✦</div>
+        <div class="symbol s7">♡</div>
+        <div class="symbol s8">✧</div>
 
-        <div class="background-decor">
-
-            <span class="bg-symbol symbol-1">♡</span>
-            <span class="bg-symbol symbol-2">✦</span>
-            <span class="bg-symbol symbol-3">☾</span>
-            <span class="bg-symbol symbol-4">♡</span>
-            <span class="bg-symbol symbol-5">✧</span>
-            <span class="bg-symbol symbol-6">♡</span>
-
-        </div>
+    </div>
 
 
-        <!-- =================================================
-             CERTIFICATE
-        ================================================== -->
-
-        <section class="certificate-stage">
-
-            <div class="certificate">
-
-                <div class="corner top-left">❧</div>
-                <div class="corner top-right">❧</div>
-                <div class="corner bottom-left">❧</div>
-                <div class="corner bottom-right">❧</div>
+    <div class="frame"></div>
 
 
-                <div class="certificate-content">
+    <!-- =====================================================
+         CERTIFICATE + BUTTON
+    ====================================================== -->
 
-                    <h1 class="certificate-title">
-                        CERTIFICATE
-                    </h1>
-
-                    <p class="certificate-subtitle">
-                        Of Appreciation
-                    </p>
+    <main class="stage">
 
 
-                    <div class="divider">
+        <section
+            class="certificate"
+            id="certificate"
+        >
 
-                        <span class="divider-line"></span>
+            <div class="corner tl">❧</div>
+            <div class="corner tr">❧</div>
+            <div class="corner bl">❧</div>
+            <div class="corner br">❧</div>
 
-                        <span class="divider-symbol">
-                            ❦
-                        </span>
 
-                        <span class="divider-line"></span>
+            <div class="certificate-content">
 
+                <div class="title">
+                    CERTIFICATE
+                </div>
+
+
+                <div class="subtitle">
+                    Of Appreciation
+                </div>
+
+
+                <div class="divider">
+
+                    <div class="divider-line"></div>
+
+                    <div class="divider-symbol">
+                        ❦
                     </div>
 
+                    <div class="divider-line right"></div>
 
-                    <p class="presented">
-                        This Certificate Is Proudly Presented To
+                </div>
+
+
+                <div class="presented">
+                    THIS CERTIFICATE IS PROUDLY PRESENTED TO
+                </div>
+
+
+                <div class="recipient">
+                    PYARAA CHIKUUUU
+                </div>
+
+
+                <div class="recipient-heart">
+                    ♥
+                </div>
+
+
+                <div class="description">
+
+                    <p>
+                        For being the most amazing, sweetest
+                        and most wonderful boyfriend a girl
+                        could ever ask for.
                     </p>
 
-
-                    <h2 class="recipient">
-                        PYARAA CHIKUUUU
-                    </h2>
-
-                    <div class="name-heart">
-                        ♡
-                    </div>
-
-
-                    <p class="appreciation">
-                        For being the most amazing, sweetest and most
-                        wonderful boyfriend a girl could ever ask for.
-                    </p>
-
-
-                    <p class="appreciation-script">
+                    <p>
                         For making ordinary days feel special,
-                        bringing endless smiles, and simply being
-                        wonderfully, unmistakably you.
+                        bringing endless smiles, and simply
+                        being wonderfully, unmistakably you.
                     </p>
 
-
-                    <div class="certificate-bottom">
-
-                        <div class="signature">
-
-                            <div class="signature-line"></div>
-
-                            <div class="signature-script">
-                                With Love ♡
-                            </div>
-
-                            <div class="signature-label">
-                                Issued With Love
-                            </div>
-
-                        </div>
+                </div>
 
 
-                        <div class="stamp">
+                <div class="bottom">
 
-                            <div class="stamp-inner">
-                                OFFICIALLY<br>
-                                APPROVED<br>
-                                ♥ 2026 ♥
-                            </div>
+                    <div class="signature">
 
-                        </div>
+                        With Love ♡
+
+                        <small>
+                            ISSUED WITH LOVE
+                        </small>
+
+                    </div>
 
 
-                        <div class="issued">
+                    <div class="stamp">
 
-                            <div class="issued-heart">
-                                ♥
-                            </div>
+                        OFFICIALLY<br>
+                        APPROVED<br>
+                        ♥ 2026 ♥
 
-                            <div class="issued-text">
-                                Boyfriend's Day
-                            </div>
+                    </div>
 
-                        </div>
+
+                    <div class="boyfriend-day">
+
+                        <span>♥</span>
+
+                        Boyfriend's<br>
+                        Day
 
                     </div>
 
@@ -1036,139 +1402,153 @@
 
 
         <!-- =================================================
-             TAP TO CONTINUE
+             BUTTON IS PART OF THE VIEWPORT LAYOUT
         ================================================== -->
 
-        <div class="continue-area" id="continueArea">
+        <div class="continue-area">
 
-            <button
-                class="continue-button"
-                id="continueButton"
-                type="button"
+            <a
+                href="penguin.html"
+                class="continue-btn"
+                id="continueBtn"
             >
-                TAP TO CONTINUE
-            </button>
+                TAP TO CONTINUE ♡
+            </a>
 
         </div>
 
-
-        <!-- =================================================
-             SAME CURTAIN SYSTEM
-        ================================================== -->
-
-        <div class="curtain-system">
-
-            <div
-                class="curtain curtain-left"
-                id="leftCurtain"
-            ></div>
-
-            <div
-                class="curtain curtain-right"
-                id="rightCurtain"
-            ></div>
-
-        </div>
 
     </main>
 
 
-    <script>
+    <!-- =====================================================
+         CURTAINS
+    ====================================================== -->
 
-        /* =====================================================
-           ELEMENTS
-        ===================================================== */
+    <div class="curtain-system">
 
-        const leftCurtain =
-            document.getElementById("leftCurtain");
+        <div
+            class="curtain curtain-left"
+            id="leftCurtain"
+        ></div>
 
-        const rightCurtain =
-            document.getElementById("rightCurtain");
+        <div
+            class="curtain curtain-right"
+            id="rightCurtain"
+        ></div>
 
-        const continueArea =
-            document.getElementById("continueArea");
+    </div>
 
-        const continueButton =
-            document.getElementById("continueButton");
-
-        const page =
-            document.getElementById("page");
-
-
-        /* =====================================================
-           CERTIFICATE PAGE ENTRY
-           
-           Curtains arrive CLOSED from index.html.
-           
-           The certificate is already underneath.
-           
-           We allow the browser to paint the page first,
-           THEN open the curtains.
-        ===================================================== */
-
-        window.addEventListener("load", () => {
-
-            requestAnimationFrame(() => {
-
-                requestAnimationFrame(() => {
-
-                    setTimeout(() => {
-
-                        leftCurtain.classList.add("open");
-
-                        rightCurtain.classList.add("open");
-
-                    }, 120);
-
-                });
-
-            });
-
-        });
+</div>
 
 
-        /* =====================================================
-           SHOW TAP TO CONTINUE
-           
-           Certificate reveal takes 1.9 seconds.
-           
-           We wait a little longer so the button doesn't
-           appear at the exact same moment as the certificate.
-        ===================================================== */
+<script>
 
-        setTimeout(() => {
+/* =========================================================
+   CURTAIN + CERTIFICATE SEQUENCE
+========================================================= */
 
-            continueArea.classList.add("visible");
+const leftCurtain =
+    document.getElementById("leftCurtain");
 
-        }, 2800);
+const rightCurtain =
+    document.getElementById("rightCurtain");
 
-
-        /* =====================================================
-           GO TO PENGUIN PAGE
-        ===================================================== */
-
-        continueButton.addEventListener("click", () => {
-
-            /*
-               Give the current page a tiny graceful exit.
-            */
-
-            page.classList.add("page-exit");
+const certificate =
+    document.getElementById("certificate");
 
 
-            /*
-               Then load Page 3.
-            */
+/*
+   Start completely covered.
+   Then reveal certificate.
+*/
+
+window.addEventListener("load", () => {
+
+    requestAnimationFrame(() => {
+
+        requestAnimationFrame(() => {
 
             setTimeout(() => {
 
-                window.location.href = "penguin.html";
+                certificate.classList.add("visible");
 
-            }, 450);
+                leftCurtain.classList.add("open");
+                rightCurtain.classList.add("open");
+
+            }, 120);
 
         });
 
-    </script>
+    });
+
+});
+
+
+/* =========================================================
+   BUTTON SAFETY
+========================================================= */
+
+/*
+   The button uses a normal <a> rather than JavaScript
+   navigation, so it works reliably on phones,
+   desktop browsers and file:// testing.
+*/
+
+const continueBtn =
+    document.getElementById("continueBtn");
+
+
+continueBtn.addEventListener(
+    "touchend",
+    function() {
+
+        /*
+           Do not preventDefault().
+           The browser needs the normal link action.
+        */
+
+    },
+    {
+        passive: true
+    }
+);
+
+
+/* =========================================================
+   PREVENT ACCIDENTAL DOUBLE TAPS
+========================================================= */
+
+let navigating = false;
+
+
+continueBtn.addEventListener(
+    "click",
+    function(event) {
+
+        if (navigating) {
+
+            event.preventDefault();
+
+            return;
+        }
+
+
+        navigating = true;
+
+
+        /*
+           Give the tap a tiny visual response.
+        */
+
+        continueBtn.style.transform =
+            "scale(0.96)";
+
+    }
+);
+
+</script>
+
 
 </body>
 </html>
