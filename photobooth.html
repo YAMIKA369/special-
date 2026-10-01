@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Photo Booth ♡</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Georgia, "Times New Roman", serif;
+    background: #f7f2eb;
+}
+
+body {
+    color: #4a2630;
+}
+
+.world {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(100,90,85,.045) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 83% 72%, rgba(100,90,85,.045) 0 1px, transparent 1.5px),
+        #f7f2eb;
+}
+
+.frame {
+    position: fixed;
+    inset: 7px;
+    border: 1px solid rgba(116,20,35,.45);
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.symbols {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    color: rgba(91,73,75,.10);
+    font-size: 17px;
+}
+
+.symbol {
+    position: absolute;
+}
+
+.s1 { top: 10%; left: 8%; }
+.s2 { top: 18%; right: 9%; }
+.s3 { top: 48%; left: 5%; }
+.s4 { bottom: 15%; right: 8%; }
+.s5 { bottom: 9%; left: 16%; }
+.s6 { top: 72%; right: 20%; }
+
+
+/* =========================
+   MAIN BOOTH
+========================= */
+
+.booth-screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    transition: opacity .6s ease, transform .6s ease;
+}
+
+.booth-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(.97);
+}
+
+.photobooth {
+    position: relative;
+    width: min(520px, 100vw);
+    height: min(900px, 100vh);
+    min-height: 100%;
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            #d8c4e7 0%,
+            #b79bce 24%,
+            #a786c0 50%,
+            #c4add8 76%,
+            #dfcde9 100%
+        );
+
+    border-radius: 22px;
+
+    box-shadow:
+        inset 0 0 0 2px rgba(255,255,255,.35),
+        inset 0 0 45px rgba(70,45,85,.16),
+        0 20px 55px rgba(63,39,65,.20);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.photobooth::before,
+.photobooth::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 15px;
+
+    background: linear-gradient(
+        90deg,
+        rgba(78,53,92,.28),
+        rgba(255,255,255,.15),
+        rgba(78,53,92,.20)
+    );
+
+    z-index: 2;
+}
+
+.photobooth::before {
+    left: 0;
+}
+
+.photobooth::after {
+    right: 0;
+}
+
+
+/* =========================
+   SIGN
+========================= */
+
+.sign {
+    margin-top: clamp(35px, 7vh, 65px);
+    padding: 10px 24px 12px;
+
+    background: #efe5f4;
+    border: 2px solid #765482;
+    border-radius: 6px;
+
+    color: #57365f;
+
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 4px;
+
+    box-shadow:
+        0 5px 0 #84649a,
+        0 8px 14px rgba(60,40,70,.20);
+
+    z-index: 5;
+}
+
+
+/* =========================
+   CAMERA WINDOW
+========================= */
+
+.camera-frame {
+    position: relative;
+
+    width: min(82%, 390px);
+    aspect-ratio: 4 / 4.7;
+
+    margin-top: clamp(30px, 6vh, 50px);
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            #302838 0%,
+            #1c1820 55%,
+            #100e13 100%
+        );
+
+    border: 13px solid #6c4b79;
+    border-radius: 28px;
+
+    box-shadow:
+        inset 0 0 0 3px rgba(255,255,255,.13),
+        inset 0 0 30px rgba(0,0,0,.65),
+        0 10px 25px rgba(55,35,65,.28);
+
+    overflow: hidden;
+}
+
+.inner-curtain {
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #4d254f 0%,
+            #7a3c70 17%,
+            #512653 34%,
+            #85447a 50%,
+            #522852 66%,
+            #793b6d 83%,
+            #462249 100%
+        );
+
+    transition: transform 1s cubic-bezier(.65,0,.25,1);
+}
+
+.inner-curtain::after {
+    content: "";
+
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+
+    background: rgba(25,12,25,.35);
+
+    transform: translateX(-50%);
+}
+
+.inner-curtain.open {
+    transform: translateY(-102%);
+}
+
+.camera-lens {
+    position: absolute;
+
+    width: 80px;
+    height: 80px;
+
+    border-radius: 50%;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%,-50%);
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #8f7c9f 0 8%,
+            #42394e 20%,
+            #17151c 55%,
+            #09080c 100%
+        );
+
+    border: 8px solid #80708b;
+
+    box-shadow:
+        0 0 0 4px #332a3a,
+        0 0 25px rgba(180,150,205,.28);
+}
+
+
+/* =========================
+   COUNTDOWN
+========================= */
+
+.countdown {
+    position: absolute;
+    z-index: 20;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%,-50%);
+
+    font-family: Arial, sans-serif;
+
+    font-size: clamp(70px, 20vw, 115px);
+    font-weight: 900;
+
+    color: white;
+
+    text-shadow:
+        0 3px 15px rgba(0,0,0,.7),
+        0 0 25px rgba(255,255,255,.35);
+
+    opacity: 0;
+}
+
+.countdown.show {
+    animation: countdownPop .85s ease forwards;
+}
+
+@keyframes countdownPop {
+
+    0% {
+        opacity: 0;
+        transform: translate(-50%,-50%) scale(1.5);
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    75% {
+        opacity: 1;
+        transform: translate(-50%,-50%) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%,-50%) scale(.7);
+    }
+}
+
+
+/* =========================
+   FLASH
+========================= */
+
+.flash {
+    position: fixed;
+    inset: 0;
+
+    z-index: 500;
+
+    background: white;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+.flash.fire {
+    animation: flash .38s ease-out;
+}
+
+@keyframes flash {
+
+    0% {
+        opacity: 0;
+    }
+
+    18% {
+        opacity: .95;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+
+/* =========================
+   CONTROLS
+========================= */
+
+.instruction {
+    margin-top: 20px;
+
+    color: #4e3156;
+
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.camera-button {
+    position: relative;
+
+    width: 88px;
+    height: 88px;
+
+    margin-top: 18px;
+
+    border-radius: 50%;
+
+    border: 8px solid #eee3f2;
+
+    background:
+        radial-gradient(
+            circle,
+            #d7b8df 0%,
+            #a477b1 58%,
+            #795285 100%
+        );
+
+    box-shadow:
+        0 7px 0 #65456f,
+        0 12px 20px rgba(58,38,65,.25);
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:
+        transform .12s ease,
+        box-shadow .12s ease;
+}
+
+.camera-button::after {
+    content: "";
+
+    width: 31px;
+    height: 31px;
+
+    border-radius: 50%;
+
+    background: #f9f5fa;
+    border: 2px solid #6b4a77;
+}
+
+.camera-button:active {
+    transform: translateY(5px);
+
+    box-shadow:
+        0 2px 0 #65456f,
+        0 6px 12px rgba(58,38,65,.22);
+}
+
+.camera-button.disabled {
+    pointer-events: none;
+    opacity: .6;
+}
+
+.ready-text {
+    margin-top: 12px;
+
+    color: #57385f;
+
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+
+/* =========================
+   PHOTOS READY SCREEN
+========================= */
+
+.ready-screen {
+    position: fixed;
+    inset: 0;
+
+    z-index: 200;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #e5d5e9,
+            #c4afd0 48%,
+            #8f7899 100%
+        );
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition: opacity .7s ease;
+}
+
+.ready-screen.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.ready-title {
+    margin: 0;
+
+    color: #49304f;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: clamp(28px, 8vw, 44px);
+
+    text-align: center;
+
+    letter-spacing: 1px;
+}
+
+.ready-subtitle {
+    margin: 13px 0 35px;
+
+    color: #654c6c;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+    letter-spacing: 1.5px;
+
+    text-align: center;
+}
+
+.yes-button {
+    min-width: 170px;
+
+    padding: 15px 32px;
+
+    border: 2px solid #63446d;
+    border-radius: 999px;
+
+    background: #f1e6f4;
+
+    color: #53365b;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 6px 0 #76537f,
+        0 10px 20px rgba(58,38,65,.20);
+
+    transition:
+        transform .12s ease,
+        box-shadow .12s ease;
+}
+
+.yes-button:active {
+    transform: translateY(5px);
+
+    box-shadow:
+        0 1px 0 #76537f,
+        0 5px 10px rgba(58,38,65,.18);
+}
+
+
+/* =========================
+   PHOTOSTRIP SCREEN
+========================= */
+
+.strip-stage {
+    position: fixed;
+    inset: 0;
+
+    z-index: 300;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(111,82,120,.25),
+            rgba(25,20,29,.88)
+        );
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition: opacity .7s ease;
+}
+
+.strip-stage.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.photo-strip {
+    position: relative;
+
+    width: 180px;
+
+    padding: 27px 13px 17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f6cbdc,
+            #f2b9d0 50%,
+            #f8d3e1
+        );
+
+    border-radius: 3px;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.42),
+        0 5px 15px rgba(0,0,0,.25);
+
+    transform: translateY(110vh) rotate(-2deg);
+
+    transition:
+        transform 1.3s cubic-bezier(.2,.8,.2,1);
+
+    z-index: 5;
+}
+
+.strip-stage.visible .photo-strip {
+    transform: translateY(-8vh) rotate(-2deg);
+}
+
+.strip-holes {
+    position: absolute;
+
+    top: 9px;
+    left: 13px;
+    right: 13px;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.strip-hole {
+    width: 10px;
+    height: 4px;
+
+    border-radius: 2px;
+
+    background: #d48daa;
+
+    box-shadow:
+        inset 0 1px 2px rgba(0,0,0,.15);
+}
+
+.strip-photo {
+    display: block;
+
+    width: 100%;
+    aspect-ratio: 4 / 4.2;
+
+    object-fit: cover;
+
+    margin-bottom: 9px;
+
+    border: 3px solid #fff8fa;
+
+    box-shadow:
+        0 2px 4px rgba(80,40,55,.15);
+}
+
+.strip-label {
+    margin-top: 8px;
+
+    text-align: center;
+
+    color: #9b536f;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+    font-weight: 800;
+
+    letter-spacing: 2.5px;
+}
+
+
+/* =========================
+   FULL SCREEN STRIP
+========================= */
+
+.full-strip-screen {
+    position: fixed;
+    inset: 0;
+
+    z-index: 400;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #f5d8e2 0%,
+            #cba8ba 35%,
+            #403440 100%
+        );
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition: opacity .7s ease;
+}
+
+.full-strip-screen.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.full-strip {
+    width: min(245px, 64vw);
+
+    padding: 34px 17px 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f6cbdc,
+            #f2b9d0 50%,
+            #f8d3e1
+        );
+
+    box-shadow:
+        0 25px 60px rgba(30,20,28,.42);
+
+    transform: scale(.82) rotate(-2deg);
+
+    transition:
+        transform .8s cubic-bezier(.2,.8,.2,1);
+}
+
+.full-strip-screen.visible .full-strip {
+    transform: scale(1) rotate(-2deg);
+}
+
+.full-strip img {
+    display: block;
+
+    width: 100%;
+
+    aspect-ratio: 4 / 4.2;
+
+    object-fit: cover;
+
+    margin-bottom: 12px;
+
+    border: 4px solid white;
+}
+
+.full-strip-title {
+    margin-top: 12px;
+
+    color: #9b536f;
+
+    text-align: center;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 3px;
+}
+
+.continue-button {
+    position: absolute;
+
+    bottom: 6%;
+
+    padding: 14px 25px;
+
+    border: 1px solid rgba(255,255,255,.8);
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.14);
+
+    backdrop-filter: blur(10px);
+
+    color: white;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1.8px;
+
+    text-decoration: none;
+
+    transition:
+        background .2s ease,
+        transform .2s ease;
+}
+
+.continue-button:active {
+    transform: scale(.97);
+
+    background: rgba(255,255,255,.25);
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .booth-screen {
+        padding: 0;
+    }
+
+    .photobooth {
+        width: 100vw;
+        height: 100vh;
+        min-height: 100vh;
+        border-radius: 0;
+    }
+
+    .sign {
+        margin-top: 7vh;
+    }
+
+    .camera-frame {
+        width: 82vw;
+        max-width: 390px;
+        margin-top: 5vh;
+    }
+
+    .camera-button {
+        width: 82px;
+        height: 82px;
+    }
+
+    .photo-strip {
+        width: 185px;
+    }
+
+    .strip-stage.visible .photo-strip {
+        transform: translateY(-6vh) rotate(-2deg);
+    }
+
+    .full-strip {
+        width: 68vw;
+        max-width: 255px;
+    }
+}
+
+@media (max-height: 700px) {
+
+    .sign {
+        margin-top: 25px;
+    }
+
+    .camera-frame {
+        margin-top: 20px;
+        width: min(75vw, 300px);
+    }
+
+    .camera-button {
+        width: 70px;
+        height: 70px;
+    }
+
+    .instruction {
+        margin-top: 10px;
+    }
+
+    .ready-text {
+        margin-top: 7px;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="world">
+
+    <div class="symbols">
+        <span class="symbol s1">♡</span>
+        <span class="symbol s2">✦</span>
+        <span class="symbol s3">☾</span>
+        <span class="symbol s4">♡</span>
+        <span class="symbol s5">✧</span>
+        <span class="symbol s6">♡</span>
+    </div>
+
+    <div class="frame"></div>
+
+
+    <!-- =========================
+         FULL-SCREEN PHOTO BOOTH
+    ========================== -->
+
+    <section class="booth-screen" id="boothScreen">
+
+        <div class="photobooth">
+
+            <div class="sign">
+                PHOTO BOOTH
+            </div>
+
+
+            <div class="camera-frame">
+
+                <div class="inner-curtain" id="innerCurtain"></div>
+
+                <div class="camera-lens"></div>
+
+                <div class="countdown" id="countdown">
+                    3
+                </div>
+
+            </div>
+
+
+            <div class="instruction" id="instruction">
+                Your photos are waiting...
+            </div>
+
+
+            <button
+                class="camera-button"
+                id="cameraButton"
+                aria-label="Start photo booth">
+            </button>
+
+
+            <div class="ready-text" id="readyText">
+                PRESS TO START
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         PHOTOS ARE READY
+    ========================== -->
+
+    <section class="ready-screen" id="readyScreen">
+
+        <h1 class="ready-title">
+            Your photos are ready ♡
+        </h1>
+
+        <p class="ready-subtitle">
+            Your little photobooth memory is waiting for you.
+        </p>
+
+        <button class="yes-button" id="yesButton">
+            YES →
+        </button>
+
+    </section>
+
+
+    <!-- =========================
+         PHOTOSTRIP
+    ========================== -->
+
+    <section class="strip-stage" id="stripStage">
+
+        <div class="photo-strip">
+
+            <div class="strip-holes">
+                <span class="strip-hole"></span>
+                <span class="strip-hole"></span>
+                <span class="strip-hole"></span>
+                <span class="strip-hole"></span>
+                <span class="strip-hole"></span>
+                <span class="strip-hole"></span>
+            </div>
+
+
+            <img
+                class="strip-photo"
+                src="jpg.1.jpg"
+                alt="Photo 1"
+            >
+
+            <img
+                class="strip-photo"
+                src="jpg.2.jpg"
+                alt="Photo 2"
+            >
+
+            <img
+                class="strip-photo"
+                src="jpg.3.jpg"
+                alt="Photo 3"
+            >
+
+
+            <div class="strip-label">
+                PHOTO BOOTH ♡ 2026
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FULL-SCREEN STRIP
+    ========================== -->
+
+    <section class="full-strip-screen" id="fullStripScreen">
+
+        <div class="full-strip">
+
+            <img
+                src="jpg.1.jpg"
+                alt="Photo 1"
+            >
+
+            <img
+                src="jpg.2.jpg"
+                alt="Photo 2"
+            >
+
+            <img
+                src="jpg.3.jpg"
+                alt="Photo 3"
+            >
+
+            <div class="full-strip-title">
+                PHOTO BOOTH ♡ 2026
+            </div>
+
+        </div>
+
+
+        <a
+            class="continue-button"
+            href="library.html">
+            CONTINUE TO PHOTO LIBRARY →
+        </a>
+
+    </section>
+
+
+    <div class="flash" id="flash"></div>
+
+</div>
+
+
+<script>
+
+const cameraButton =
+    document.getElementById("cameraButton");
+
+const boothScreen =
+    document.getElementById("boothScreen");
+
+const readyScreen =
+    document.getElementById("readyScreen");
+
+const yesButton =
+    document.getElementById("yesButton");
+
+const stripStage =
+    document.getElementById("stripStage");
+
+const fullStripScreen =
+    document.getElementById("fullStripScreen");
+
+const innerCurtain =
+    document.getElementById("innerCurtain");
+
+const countdown =
+    document.getElementById("countdown");
+
+const flash =
+    document.getElementById("flash");
+
+const instruction =
+    document.getElementById("instruction");
+
+const readyText =
+    document.getElementById("readyText");
+
+
+let sessionStarted = false;
+
+
+/* =========================
+   START PHOTO BOOTH
+========================= */
+
+cameraButton.addEventListener("click", async () => {
+
+    if (sessionStarted) return;
+
+    sessionStarted = true;
+
+    cameraButton.classList.add("disabled");
+
+    instruction.textContent = "GET READY...";
+    readyText.textContent = "PHOTO BOOTH STARTING";
+
+
+    /* Open booth curtain */
+
+    innerCurtain.classList.add("open");
+
+    await wait(800);
+
+
+    /* One single countdown */
+
+    countdown.textContent = "3";
+    countdown.classList.add("show");
+
+    await wait(850);
+
+
+    /* One flash only */
+
+    flash.classList.remove("fire");
+
+    void flash.offsetWidth;
+
+    flash.classList.add("fire");
+
+    await wait(450);
+
+
+    /* Done */
+
+    instruction.textContent = "ALL DONE ♡";
+    readyText.textContent = "PHOTOS READY";
+
+
+    await wait(900);
+
+
+    /* Hide booth */
+
+    boothScreen.classList.add("hidden");
+
+    await wait(600);
+
+
+    /* Show the ONLY option */
+
+    readyScreen.classList.add("visible");
+
+});
+
+
+/* =========================
+   YES → GET PHOTOSTRIP
+========================= */
+
+yesButton.addEventListener("click", async () => {
+
+    readyScreen.classList.remove("visible");
+
+    await wait(450);
+
+    stripStage.classList.add("visible");
+
+    await wait(1300);
+
+    /*
+       After the strip has physically
+       come out, show the full-screen
+       version.
+    */
+
+    stripStage.classList.remove("visible");
+
+    await wait(450);
+
+    fullStripScreen.classList.add("visible");
+
+});
+
+
+/* =========================
+   WAIT FUNCTION
+========================= */
+
+function wait(ms) {
+
+    return new Promise(resolve => {
+        setTimeout(resolve, ms);
+    });
+
+}
+
+</script>
+
+</body>
+</html>

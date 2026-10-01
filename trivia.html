@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Do You Remember?</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+
+body{
+    font-family:Georgia, "Times New Roman", serif;
+    background:#f7f2eb;
+    color:#541722;
+}
+
+/* =========================================================
+   MAIN WORLD
+========================================================= */
+
+.world{
+    position:fixed;
+    inset:0;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+
+    background:
+        radial-gradient(
+            circle at 18% 22%,
+            rgba(100,90,85,.045) 0 1px,
+            transparent 1.5px
+        ),
+        radial-gradient(
+            circle at 82% 72%,
+            rgba(100,90,85,.045) 0 1px,
+            transparent 1.5px
+        ),
+        #f7f2eb;
+}
+
+/* subtle background details */
+
+.symbol{
+    position:absolute;
+    color:#6f6460;
+    opacity:.09;
+    pointer-events:none;
+    user-select:none;
+}
+
+.s1{
+    top:9%;
+    left:9%;
+    font-size:18px;
+    transform:rotate(-12deg);
+}
+
+.s2{
+    top:17%;
+    right:12%;
+    font-size:14px;
+}
+
+.s3{
+    bottom:15%;
+    left:10%;
+    font-size:19px;
+}
+
+.s4{
+    bottom:23%;
+    right:9%;
+    font-size:15px;
+    transform:rotate(15deg);
+}
+
+.s5{
+    top:47%;
+    left:4%;
+    font-size:13px;
+}
+
+.s6{
+    top:63%;
+    right:5%;
+    font-size:18px;
+}
+
+/* thin permanent frame */
+
+.frame{
+    position:fixed;
+    inset:7px;
+    border:1px solid rgba(116,20,35,.45);
+    pointer-events:none;
+    z-index:100;
+}
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+.stage{
+    position:relative;
+    width:100%;
+    height:100%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:24px 16px;
+
+    transition:
+        opacity .45s ease,
+        transform .45s ease;
+}
+
+.quiz-card{
+    position:relative;
+
+    width:min(680px,92vw);
+    min-height:440px;
+
+    padding:42px 28px 32px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,253,248,.98),
+            rgba(249,242,230,.98)
+        );
+
+    border:1px solid rgba(116,20,35,.42);
+
+    box-shadow:
+        0 22px 50px rgba(55,34,27,.15),
+        0 5px 14px rgba(55,34,27,.08);
+
+    opacity:0;
+    transform:translateY(12px);
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease;
+}
+
+.quiz-card.visible{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.quiz-card::before{
+    content:"";
+    position:absolute;
+    inset:10px;
+    border:1px solid rgba(169,133,53,.55);
+    pointer-events:none;
+}
+
+.quiz-card::after{
+    content:"";
+    position:absolute;
+    inset:16px;
+    border:1px solid rgba(116,20,35,.25);
+    pointer-events:none;
+}
+
+/* corners */
+
+.corner{
+    position:absolute;
+    color:#a98535;
+    font-size:24px;
+    z-index:2;
+}
+
+.corner.tl{
+    top:17px;
+    left:20px;
+}
+
+.corner.tr{
+    top:17px;
+    right:20px;
+    transform:scaleX(-1);
+}
+
+.corner.bl{
+    bottom:17px;
+    left:20px;
+    transform:scaleY(-1);
+}
+
+.corner.br{
+    bottom:17px;
+    right:20px;
+    transform:scale(-1);
+}
+
+.content{
+    position:relative;
+    z-index:3;
+    width:100%;
+    text-align:center;
+}
+
+.eyebrow{
+    font-size:11px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:#8b756b;
+    margin-bottom:12px;
+}
+
+.title{
+    font-size:clamp(26px,6vw,38px);
+    font-weight:normal;
+    color:#721426;
+    margin-bottom:9px;
+}
+
+.subtitle{
+    font-size:15px;
+    color:#786865;
+    margin-bottom:27px;
+}
+
+.question-number{
+    font-size:11px;
+    letter-spacing:2px;
+    color:#a98535;
+    margin-bottom:13px;
+}
+
+.question{
+    max-width:550px;
+    margin:0 auto 25px;
+
+    font-size:clamp(19px,4.5vw,25px);
+    line-height:1.4;
+
+    color:#4e3430;
+}
+
+.options{
+    width:min(430px,100%);
+    margin:0 auto;
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:11px;
+}
+
+.option{
+    appearance:none;
+
+    min-height:48px;
+    padding:12px 10px;
+
+    border:1px solid rgba(116,20,35,.28);
+
+    background:rgba(255,255,255,.58);
+
+    color:#5b1725;
+
+    font-family:Georgia, "Times New Roman", serif;
+    font-size:14px;
+
+    cursor:pointer;
+
+    transition:
+        transform .18s ease,
+        background .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+
+.option:hover{
+    transform:translateY(-2px);
+
+    border-color:#8b2639;
+
+    box-shadow:
+        0 5px 13px rgba(80,30,35,.08);
+}
+
+.option:active{
+    transform:scale(.98);
+}
+
+.option.correct{
+    background:#edf3e8;
+    border-color:#6f8b61;
+    color:#425638;
+}
+
+.option.wrong{
+    background:#f5dadd;
+    border-color:#9c243a;
+    color:#7b172b;
+}
+
+.feedback{
+    min-height:23px;
+    margin-top:17px;
+
+    color:#7d6963;
+    font-size:14px;
+}
+
+.continue-btn{
+    margin-top:15px;
+
+    padding:11px 27px;
+
+    border:1px solid #7a1a2b;
+    background:#7a1a2b;
+    color:#fffaf4;
+
+    font-family:Georgia, "Times New Roman", serif;
+    font-size:12px;
+    letter-spacing:1.6px;
+
+    cursor:pointer;
+
+    opacity:0;
+    pointer-events:none;
+
+    transform:translateY(5px);
+
+    transition:
+        opacity .35s ease,
+        transform .35s ease;
+}
+
+.continue-btn.show{
+    opacity:1;
+    pointer-events:auto;
+    transform:translateY(0);
+}
+
+.continue-btn:hover{
+    transform:translateY(-2px);
+}
+
+/* =========================================================
+   ANGRY MODE
+========================================================= */
+
+.angry-screen{
+    position:fixed;
+    inset:0;
+
+    z-index:50;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #ef3348 0%,
+            #d71935 42%,
+            #a80820 100%
+        );
+
+    opacity:0;
+    pointer-events:none;
+
+    transform:scale(1.03);
+
+    transition:
+        opacity .3s ease,
+        transform .3s ease;
+}
+
+.angry-screen.show{
+    opacity:1;
+    pointer-events:auto;
+    transform:scale(1);
+}
+
+/* subtle angry background lines */
+
+.angry-screen::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:
+        repeating-linear-gradient(
+            135deg,
+            transparent 0,
+            transparent 35px,
+            rgba(255,255,255,.055) 36px,
+            transparent 37px
+        );
+
+    pointer-events:none;
+}
+
+.angry-content{
+    position:relative;
+    z-index:2;
+
+    width:min(620px,94vw);
+
+    text-align:center;
+
+    color:white;
+}
+
+/* HUGE angry emoji */
+
+.angry-emoji{
+    font-family:Arial, sans-serif;
+
+    font-size:clamp(80px,20vw,145px);
+    line-height:1;
+
+    margin-bottom:18px;
+
+    filter:
+        drop-shadow(0 9px 0 rgba(105,0,15,.25))
+        drop-shadow(0 16px 20px rgba(70,0,10,.25));
+
+    animation:
+        angryShake .42s ease-in-out 2;
+}
+
+@keyframes angryShake{
+
+    0%{
+        transform:rotate(0deg) scale(1);
+    }
+
+    20%{
+        transform:rotate(-8deg) scale(1.04);
+    }
+
+    40%{
+        transform:rotate(8deg) scale(1.05);
+    }
+
+    60%{
+        transform:rotate(-6deg) scale(1.04);
+    }
+
+    80%{
+        transform:rotate(5deg) scale(1.02);
+    }
+
+    100%{
+        transform:rotate(0deg) scale(1);
+    }
+}
+
+.angry-title{
+    font-family:Arial, Helvetica, sans-serif;
+
+    font-size:clamp(31px,8vw,61px);
+    line-height:.98;
+
+    font-weight:900;
+
+    letter-spacing:-1.5px;
+
+    text-transform:uppercase;
+
+    color:white;
+
+    text-shadow:
+        0 5px 0 #85091c,
+        0 9px 16px rgba(70,0,10,.3);
+
+    margin-bottom:17px;
+}
+
+.angry-subtitle{
+    font-family:Arial, Helvetica, sans-serif;
+
+    font-size:clamp(15px,4vw,19px);
+    font-weight:700;
+
+    color:#fff4f4;
+
+    margin-bottom:31px;
+}
+
+.angry-buttons{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+}
+
+.angry-btn{
+    width:min(310px,84vw);
+
+    padding:14px 20px;
+
+    border:2px solid white;
+
+    background:white;
+    color:#b20b26;
+
+    font-family:Arial, Helvetica, sans-serif;
+
+    font-size:14px;
+    font-weight:900;
+
+    letter-spacing:2px;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 6px 0 #85091c,
+        0 11px 18px rgba(70,0,10,.25);
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease;
+}
+
+.angry-btn:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 8px 0 #85091c,
+        0 14px 20px rgba(70,0,10,.28);
+}
+
+.angry-btn:active{
+    transform:translateY(5px);
+
+    box-shadow:
+        0 2px 0 #85091c,
+        0 5px 10px rgba(70,0,10,.2);
+}
+
+.angry-btn.leave{
+    background:transparent;
+    color:white;
+}
+
+/* =========================================================
+   LEAVE / SECOND ANGRY SCREEN
+========================================================= */
+
+.leave-screen{
+    position:fixed;
+    inset:0;
+
+    z-index:60;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #e52b42 0%,
+            #c70e2c 45%,
+            #95061d 100%
+        );
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:opacity .35s ease;
+}
+
+.leave-screen.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.leave-content{
+    width:min(600px,92vw);
+
+    text-align:center;
+
+    color:white;
+}
+
+.leave-emoji{
+    font-family:Arial, sans-serif;
+    font-size:clamp(85px,22vw,155px);
+    line-height:1;
+
+    margin-bottom:20px;
+
+    filter:
+        drop-shadow(0 9px 0 rgba(90,0,10,.3));
+
+    animation:
+        angryShake .5s ease-in-out 1;
+}
+
+.leave-title{
+    font-family:Arial, Helvetica, sans-serif;
+
+    font-size:clamp(34px,9vw,64px);
+
+    font-weight:900;
+
+    line-height:1;
+
+    text-transform:uppercase;
+
+    color:white;
+
+    text-shadow:
+        0 5px 0 #760717,
+        0 10px 17px rgba(50,0,5,.3);
+
+    margin-bottom:30px;
+}
+
+.leave-continue{
+    width:min(310px,84vw);
+
+    padding:15px 20px;
+
+    border:2px solid white;
+
+    background:white;
+    color:#a70721;
+
+    font-family:Arial, Helvetica, sans-serif;
+
+    font-size:14px;
+    font-weight:900;
+
+    letter-spacing:2px;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 6px 0 #760717,
+        0 11px 18px rgba(60,0,10,.25);
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease;
+}
+
+.leave-continue:hover{
+    transform:translateY(-2px);
+}
+
+.leave-continue:active{
+    transform:translateY(4px);
+
+    box-shadow:
+        0 2px 0 #760717,
+        0 5px 10px rgba(60,0,10,.2);
+}
+
+/* =========================================================
+   COMPLETION
+========================================================= */
+
+.complete-screen{
+    position:fixed;
+    inset:0;
+
+    z-index:40;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:#f7f2eb;
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:opacity .55s ease;
+}
+
+.complete-screen.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.complete-card{
+    width:min(600px,92vw);
+
+    text-align:center;
+
+    padding:45px 25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fffdf8,
+            #f8f0e3
+        );
+
+    border:1px solid rgba(116,20,35,.42);
+
+    box-shadow:
+        0 20px 45px rgba(55,34,27,.15);
+}
+
+.complete-title{
+    color:#721426;
+    font-size:clamp(28px,7vw,40px);
+    font-weight:normal;
+    margin-bottom:15px;
+}
+
+.complete-text{
+    color:#725f59;
+    font-size:15px;
+    line-height:1.6;
+    margin-bottom:27px;
+}
+
+.photo-btn{
+    border:1px solid #7a1a2b;
+
+    background:#7a1a2b;
+    color:#fffaf4;
+
+    padding:13px 24px;
+
+    font-family:Georgia, "Times New Roman", serif;
+
+    font-size:12px;
+    letter-spacing:1.5px;
+
+    cursor:pointer;
+
+    transition:
+        transform .2s ease;
+}
+
+.photo-btn:hover{
+    transform:translateY(-2px);
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:540px){
+
+    .stage{
+        padding:18px 11px;
+    }
+
+    .quiz-card{
+        width:94vw;
+        min-height:500px;
+        padding:38px 19px 27px;
+    }
+
+    .options{
+        grid-template-columns:1fr;
+        gap:9px;
+    }
+
+    .option{
+        min-height:46px;
+        font-size:14px;
+    }
+
+    .question{
+        font-size:19px;
+    }
+
+    .subtitle{
+        margin-bottom:23px;
+    }
+
+    .angry-title{
+        letter-spacing:-1px;
+    }
+
+    .angry-subtitle{
+        line-height:1.4;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =======================================================
+     NORMAL TRIVIA WORLD
+======================================================== -->
+
+<div class="world">
+
+    <div class="symbol s1">♡</div>
+    <div class="symbol s2">✦</div>
+    <div class="symbol s3">☾</div>
+    <div class="symbol s4">♡</div>
+    <div class="symbol s5">✧</div>
+    <div class="symbol s6">♡</div>
+
+    <div class="stage" id="stage">
+
+        <div class="quiz-card" id="quizCard">
+
+            <div class="corner tl">❧</div>
+            <div class="corner tr">❧</div>
+            <div class="corner bl">❧</div>
+            <div class="corner br">❧</div>
+
+            <div class="content">
+
+                <div class="eyebrow">
+                    A little memory test
+                </div>
+
+                <h1 class="title">
+                    Do You Remember? ♡
+                </h1>
+
+                <p class="subtitle">
+                    Five dates. Five memories.
+                </p>
+
+                <div
+                    class="question-number"
+                    id="questionNumber"
+                ></div>
+
+                <div
+                    class="question"
+                    id="question"
+                ></div>
+
+                <div
+                    class="options"
+                    id="options"
+                ></div>
+
+                <div
+                    class="feedback"
+                    id="feedback"
+                ></div>
+
+                <button
+                    class="continue-btn"
+                    id="continueBtn"
+                >
+                    CONTINUE
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =======================================================
+     FIRST ANGRY SCREEN
+======================================================== -->
+
+<div
+    class="angry-screen"
+    id="angryScreen"
+>
+
+    <div class="angry-content">
+
+        <div class="angry-emoji">
+            😡
+        </div>
+
+        <h2 class="angry-title">
+            HOW DARE YOU<br>
+            NOT KNOW THIS?!
+        </h2>
+
+        <p class="angry-subtitle">
+            That was literally supposed to be easy.
+        </p>
+
+        <div class="angry-buttons">
+
+            <button
+                class="angry-btn"
+                id="angryContinue"
+            >
+                CONTINUE
+            </button>
+
+            <button
+                class="angry-btn leave"
+                id="leaveWebsite"
+            >
+                LEAVE WEBSITE
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =======================================================
+     LEAVE WEBSITE SCREEN
+======================================================== -->
+
+<div
+    class="leave-screen"
+    id="leaveScreen"
+>
+
+    <div class="leave-content">
+
+        <div class="leave-emoji">
+            😡
+        </div>
+
+        <h2 class="leave-title">
+            YOU REALLY<br>
+            LEFT?!
+        </h2>
+
+        <button
+            class="leave-continue"
+            id="leaveContinue"
+        >
+            CONTINUE
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =======================================================
+     COMPLETION
+======================================================== -->
+
+<div
+    class="complete-screen"
+    id="completeScreen"
+>
+
+    <div class="complete-card">
+
+        <h2 class="complete-title">
+            You remembered them all. ♡
+        </h2>
+
+        <p class="complete-text">
+            Okayyy, I guess you actually know your memories.
+            You may proceed to the next part.
+        </p>
+
+        <button
+            class="photo-btn"
+            id="photoButton"
+        >
+            CONTINUE TO PHOTO BOOTH
+        </button>
+
+    </div>
+
+</div>
+
+<div class="frame"></div>
+
+<script>
+
+/* =========================================================
+   QUESTIONS
+========================================================= */
+
+const questions = [
+
+    {
+        question: "When did our relationship start?",
+        options: [
+            "14 April 2025",
+            "16 April 2025",
+            "18 April 2025",
+            "21 April 2025"
+        ],
+        answer: 1
+    },
+
+    {
+        question: "When was our first scooty ride?",
+        options: [
+            "21 August 2026",
+            "22 August 2026",
+            "24 August 2026",
+            "27 August 2026"
+        ],
+        answer: 2
+    },
+
+    {
+        question: "When was our first hug?",
+        options: [
+            "29 May 2025",
+            "31 May 2025",
+            "2 June 2025",
+            "5 June 2025"
+        ],
+        answer: 2
+    },
+
+    {
+        question: "When did we first hold hands?",
+        options: [
+            "17 December 2024",
+            "19 December 2024",
+            "20 December 2024",
+            "22 December 2024"
+        ],
+        answer: 2
+    },
+
+    {
+        question: "When did you give me Kinder Joy?",
+        options: [
+            "26 January 2025",
+            "28 January 2025",
+            "29 January 2025",
+            "31 January 2025"
+        ],
+        answer: 2
+    }
+
+];
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const quizCard =
+    document.getElementById("quizCard");
+
+const questionNumber =
+    document.getElementById("questionNumber");
+
+const questionElement =
+    document.getElementById("question");
+
+const optionsElement =
+    document.getElementById("options");
+
+const feedback =
+    document.getElementById("feedback");
+
+const continueButton =
+    document.getElementById("continueBtn");
+
+const angryScreen =
+    document.getElementById("angryScreen");
+
+const angryContinue =
+    document.getElementById("angryContinue");
+
+const leaveWebsite =
+    document.getElementById("leaveWebsite");
+
+const leaveScreen =
+    document.getElementById("leaveScreen");
+
+const leaveContinue =
+    document.getElementById("leaveContinue");
+
+const completeScreen =
+    document.getElementById("completeScreen");
+
+const photoButton =
+    document.getElementById("photoButton");
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentQuestion = 0;
+let answered = false;
+
+/*
+   Once Leave Website has been used,
+   it never appears again during this session.
+*/
+
+let leaveUsed =
+    sessionStorage.getItem("triviaLeaveUsed") === "true";
+
+
+/* =========================================================
+   LOAD QUESTION
+========================================================= */
+
+function loadQuestion(){
+
+    answered = false;
+
+    const current =
+        questions[currentQuestion];
+
+    questionNumber.textContent =
+        `QUESTION ${currentQuestion + 1} OF ${questions.length}`;
+
+    questionElement.textContent =
+        current.question;
+
+    optionsElement.innerHTML = "";
+
+    feedback.textContent = "";
+
+    continueButton.classList.remove("show");
+
+    current.options.forEach((optionText,index)=>{
+
+        const button =
+            document.createElement("button");
+
+        button.className = "option";
+
+        button.textContent =
+            optionText;
+
+        button.addEventListener(
+            "click",
+            ()=>{
+                selectAnswer(index,button);
+            }
+        );
+
+        optionsElement.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================================================
+   ANSWER SELECTION
+========================================================= */
+
+function selectAnswer(index,button){
+
+    if(answered){
+        return;
+    }
+
+    const current =
+        questions[currentQuestion];
+
+    if(index === current.answer){
+
+        answered = true;
+
+        button.classList.add("correct");
+
+        feedback.textContent =
+            "Correct. ♡";
+
+        document
+            .querySelectorAll(".option")
+            .forEach(option=>{
+                option.style.pointerEvents = "none";
+            });
+
+        continueButton.classList.add("show");
+
+        return;
+    }
+
+
+    /*
+       WRONG ANSWER
+       Do NOT permanently lock the question.
+       First show the angry screen.
+    */
+
+    button.classList.add("wrong");
+
+    document
+        .querySelectorAll(".option")
+        .forEach(option=>{
+            option.style.pointerEvents = "none";
+        });
+
+    setTimeout(()=>{
+
+        showAngry();
+
+    },350);
+
+}
+
+
+/* =========================================================
+   SHOW ANGRY MODE
+========================================================= */
+
+function showAngry(){
+
+    angryScreen.classList.add("show");
+
+    /*
+       If Leave Website has already been used,
+       it must stay gone.
+    */
+
+    if(leaveUsed){
+
+        leaveWebsite.style.display = "none";
+
+    }else{
+
+        leaveWebsite.style.display = "block";
+
+    }
+
+}
+
+
+/* =========================================================
+   CONTINUE FROM ANGRY SCREEN
+========================================================= */
+
+angryContinue.addEventListener(
+    "click",
+    ()=>{
+
+        angryScreen.classList.remove("show");
+
+        /*
+           The first angry screen is the one chance
+           to use Leave Website.
+        */
+
+        leaveUsed = true;
+
+        sessionStorage.setItem(
+            "triviaLeaveUsed",
+            "true"
+        );
+
+        leaveWebsite.style.display = "none";
+
+        setTimeout(()=>{
+
+            answered = false;
+
+            document
+                .querySelectorAll(".option")
+                .forEach(option=>{
+
+                    option.style.pointerEvents =
+                        "auto";
+
+                    option.classList.remove(
+                        "wrong"
+                    );
+
+                });
+
+            feedback.textContent =
+                "Fine. Try again.";
+
+        },300);
+
+    }
+);
+
+
+/* =========================================================
+   LEAVE WEBSITE
+========================================================= */
+
+leaveWebsite.addEventListener(
+    "click",
+    ()=>{
+
+        leaveUsed = true;
+
+        sessionStorage.setItem(
+            "triviaLeaveUsed",
+            "true"
+        );
+
+        angryScreen.classList.remove("show");
+
+        setTimeout(()=>{
+
+            leaveScreen.classList.add("show");
+
+        },300);
+
+    }
+);
+
+
+/* =========================================================
+   RETURN FROM LEAVE SCREEN
+========================================================= */
+
+leaveContinue.addEventListener(
+    "click",
+    ()=>{
+
+        leaveScreen.classList.remove("show");
+
+        setTimeout(()=>{
+
+            answered = false;
+
+            document
+                .querySelectorAll(".option")
+                .forEach(option=>{
+
+                    option.style.pointerEvents =
+                        "auto";
+
+                    option.classList.remove(
+                        "wrong"
+                    );
+
+                });
+
+            feedback.textContent =
+                "You're back. Try again.";
+
+        },300);
+
+    }
+);
+
+
+/* =========================================================
+   NEXT QUESTION
+========================================================= */
+
+continueButton.addEventListener(
+    "click",
+    ()=>{
+
+        if(
+            currentQuestion <
+            questions.length - 1
+        ){
+
+            quizCard.style.opacity = "0";
+
+            quizCard.style.transform =
+                "translateY(10px)";
+
+            setTimeout(()=>{
+
+                currentQuestion++;
+
+                loadQuestion();
+
+                quizCard.style.opacity = "1";
+
+                quizCard.style.transform =
+                    "translateY(0)";
+
+            },400);
+
+        }else{
+
+            /*
+               All five completed.
+            */
+
+            document
+                .getElementById("stage")
+                .style.opacity = "0";
+
+            setTimeout(()=>{
+
+                completeScreen.classList.add(
+                    "show"
+                );
+
+            },500);
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   PHOTO BOOTH
+========================================================= */
+
+photoButton.addEventListener(
+    "click",
+    ()=>{
+
+        window.location.href =
+            "photobooth.html";
+
+    }
+);
+
+
+/* =========================================================
+   PAGE ENTRY
+========================================================= */
+
+window.addEventListener(
+    "load",
+    ()=>{
+
+        loadQuestion();
+
+        requestAnimationFrame(()=>{
+
+            requestAnimationFrame(()=>{
+
+                setTimeout(()=>{
+
+                    quizCard.classList.add(
+                        "visible"
+                    );
+
+                },120);
+
+            });
+
+        });
+
+    }
+);
+
+</script>
+
+</body>
+</html>

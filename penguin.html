@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>A Little Checkpoint 🐧</title>
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            background: #f7f2eb;
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+
+        /* =====================================================
+           WORLD
+        ===================================================== */
+
+        .world {
+            position: fixed;
+            inset: 0;
+
+            width: 100vw;
+            height: 100vh;
+
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 18% 22%,
+                    rgba(100, 90, 85, 0.045) 0 1px,
+                    transparent 1.5px
+                ),
+                radial-gradient(
+                    circle at 82% 72%,
+                    rgba(100, 90, 85, 0.045) 0 1px,
+                    transparent 1.5px
+                ),
+                #f7f2eb;
+
+            transition: opacity 0.45s ease;
+        }
+
+
+        .world.page-exit {
+            opacity: 0;
+        }
+
+
+        /* =====================================================
+           FRAME
+        ===================================================== */
+
+        .frame {
+            position: fixed;
+            inset: 7px;
+
+            border: 1px solid rgba(116, 20, 35, 0.45);
+
+            pointer-events: none;
+
+            z-index: 200;
+        }
+
+
+        /* =====================================================
+           BACKGROUND DECOR
+        ===================================================== */
+
+        .background-decor {
+            position: absolute;
+            inset: 0;
+
+            pointer-events: none;
+
+            opacity: 0.23;
+        }
+
+        .bg-symbol {
+            position: absolute;
+
+            color: #756d69;
+
+            user-select: none;
+        }
+
+        .symbol-1 {
+            top: 12%;
+            left: 10%;
+            font-size: 20px;
+        }
+
+        .symbol-2 {
+            top: 17%;
+            right: 12%;
+            font-size: 17px;
+        }
+
+        .symbol-3 {
+            bottom: 18%;
+            left: 14%;
+            font-size: 18px;
+        }
+
+        .symbol-4 {
+            bottom: 13%;
+            right: 10%;
+            font-size: 20px;
+        }
+
+        .symbol-5 {
+            top: 48%;
+            left: 4%;
+            font-size: 12px;
+        }
+
+        .symbol-6 {
+            top: 56%;
+            right: 5%;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           MAIN SCENE
+        ===================================================== */
+
+        .scene {
+            position: absolute;
+            inset: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            z-index: 10;
+        }
+
+
+        /* =====================================================
+           GROUND SHADOW
+        ===================================================== */
+
+        .ground-shadow {
+            position: absolute;
+
+            left: 50%;
+
+            bottom: 22%;
+
+            width: 150px;
+            height: 24px;
+
+            transform: translateX(-50%);
+
+            border-radius: 50%;
+
+            background: rgba(75, 57, 51, 0.11);
+
+            filter: blur(7px);
+
+            opacity: 0;
+
+            transition: opacity 0.8s ease;
+        }
+
+        .ground-shadow.visible {
+            opacity: 1;
+        }
+
+
+        /* =====================================================
+           PENGUIN WRAPPER
+        ===================================================== */
+
+        .penguin-wrap {
+            position: absolute;
+
+            left: -180px;
+
+            bottom: 22%;
+
+            width: 125px;
+            height: 180px;
+
+            opacity: 0;
+
+            z-index: 20;
+
+            will-change: left, transform, opacity;
+        }
+
+
+        /* =====================================================
+           PENGUIN WALK-IN
+        ===================================================== */
+
+        .penguin-wrap.enter {
+
+            opacity: 1;
+
+            animation:
+                penguinEnter 2.4s
+                cubic-bezier(0.22, 0.75, 0.25, 1)
+                forwards;
+        }
+
+
+        @keyframes penguinEnter {
+
+            0% {
+                left: -180px;
+                transform: translateY(0);
+            }
+
+            35% {
+                transform: translateY(-4px);
+            }
+
+            48% {
+                transform: translateY(0);
+            }
+
+            65% {
+                transform: translateY(-4px);
+            }
+
+            78% {
+                transform: translateY(0);
+            }
+
+            100% {
+                left: 50%;
+                transform:
+                    translateX(-50%)
+                    translateY(0);
+            }
+        }
+
+
+        /* =====================================================
+           PENGUIN WALK-OUT
+        ===================================================== */
+
+        .penguin-wrap.exit {
+
+            animation:
+                penguinExit 1.8s
+                cubic-bezier(0.65, 0, 0.85, 0.35)
+                forwards;
+        }
+
+
+        @keyframes penguinExit {
+
+            0% {
+                left: 50%;
+                transform:
+                    translateX(-50%)
+                    translateY(0);
+
+                opacity: 1;
+            }
+
+            18% {
+                transform:
+                    translateX(-50%)
+                    translateY(-4px);
+            }
+
+            30% {
+                transform:
+                    translateX(-50%)
+                    translateY(0);
+            }
+
+            100% {
+                left: calc(100% + 180px);
+
+                transform:
+                    translateX(0)
+                    translateY(0);
+
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           PENGUIN BODY
+        ===================================================== */
+
+        .penguin {
+            position: relative;
+
+            width: 100%;
+            height: 100%;
+        }
+
+
+        /* BODY */
+
+        .penguin-body {
+            position: absolute;
+
+            left: 50%;
+            bottom: 14px;
+
+            width: 92px;
+            height: 132px;
+
+            transform: translateX(-50%);
+
+            border-radius:
+                48% 48%
+                42% 42%
+                45% 45%;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #303238 0%,
+                    #17191e 48%,
+                    #0e1014 100%
+                );
+
+            box-shadow:
+                inset -8px -8px 16px rgba(0,0,0,0.25),
+                inset 8px 7px 13px rgba(255,255,255,0.05),
+                0 9px 18px rgba(40,30,28,0.14);
+        }
+
+
+        /* BELLY */
+
+        .penguin-belly {
+            position: absolute;
+
+            left: 50%;
+            bottom: 20px;
+
+            width: 63px;
+            height: 94px;
+
+            transform: translateX(-50%);
+
+            border-radius: 50% 50% 47% 47%;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #fffef9,
+                    #f2eee4
+                );
+
+            box-shadow:
+                inset -4px -5px 8px rgba(0,0,0,0.06);
+        }
+
+
+        /* HEAD */
+
+        .penguin-head {
+            position: absolute;
+
+            left: 50%;
+            top: 8px;
+
+            width: 88px;
+            height: 78px;
+
+            transform: translateX(-50%);
+
+            border-radius: 50% 50% 46% 46%;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #34363b,
+                    #15171b
+                );
+
+            box-shadow:
+                inset 5px 5px 10px rgba(255,255,255,0.05);
+        }
+
+
+        /* FACE */
+
+        .face-left,
+        .face-right {
+            position: absolute;
+
+            top: 22px;
+
+            width: 32px;
+            height: 35px;
+
+            border-radius: 50%;
+
+            background: #f7f3ea;
+        }
+
+        .face-left {
+            left: 13px;
+        }
+
+        .face-right {
+            right: 13px;
+        }
+
+
+        /* EYES */
+
+        .eye {
+            position: absolute;
+
+            top: 35px;
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #17171a;
+
+            z-index: 3;
+        }
+
+        .eye-left {
+            left: 32px;
+        }
+
+        .eye-right {
+            right: 32px;
+        }
+
+
+        /* BEAK */
+
+        .beak {
+            position: absolute;
+
+            left: 50%;
+            top: 42px;
+
+            width: 19px;
+            height: 12px;
+
+            transform: translateX(-50%);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #d7a13c,
+                    #b9781e
+                );
+
+            clip-path: polygon(
+                0 0,
+                100% 50%,
+                0 100%
+            );
+
+            z-index: 5;
+        }
+
+
+        /* WINGS */
+
+        .wing {
+            position: absolute;
+
+            top: 65px;
+
+            width: 35px;
+            height: 75px;
+
+            border-radius: 60%;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #292b30,
+                    #111318
+                );
+
+            z-index: -1;
+        }
+
+        .wing-left {
+            left: 2px;
+
+            transform: rotate(18deg);
+        }
+
+        .wing-right {
+            right: 2px;
+
+            transform: rotate(-18deg);
+        }
+
+
+        /* FEET */
+
+        .foot {
+            position: absolute;
+
+            bottom: 5px;
+
+            width: 30px;
+            height: 11px;
+
+            border-radius: 60%;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #d9a13c,
+                    #a96b1c
+                );
+
+            z-index: 2;
+        }
+
+        .foot-left {
+            left: 27px;
+        }
+
+        .foot-right {
+            right: 27px;
+        }
+
+
+        /* =====================================================
+           NOTE HELD BY PENGUIN
+        ===================================================== */
+
+        .note {
+            position: absolute;
+
+            right: -58px;
+            top: 67px;
+
+            width: 67px;
+            height: 48px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fffdf7,
+                    #f4ead7
+                );
+
+            border: 1px solid rgba(116, 26, 43, 0.5);
+
+            box-shadow:
+                0 5px 10px rgba(60,40,30,0.12);
+
+            transform:
+                rotate(5deg);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #741626;
+
+            font-size: 9px;
+
+            line-height: 1.15;
+
+            text-align: center;
+
+            z-index: 10;
+        }
+
+        .note::before {
+            content: "";
+
+            position: absolute;
+
+            top: -1px;
+            left: -1px;
+
+            width: 14px;
+            height: 14px;
+
+            border-top: 1px solid #b38a42;
+            border-left: 1px solid #b38a42;
+        }
+
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        .message {
+            position: absolute;
+
+            left: 50%;
+            top: 20%;
+
+            width: min(680px, 88vw);
+
+            transform:
+                translateX(-50%)
+                translateY(15px);
+
+            text-align: center;
+
+            opacity: 0;
+
+            z-index: 15;
+
+            transition:
+                opacity 0.9s ease,
+                transform 0.9s cubic-bezier(0.2,0.75,0.25,1);
+        }
+
+        .message.visible {
+            opacity: 1;
+
+            transform:
+                translateX(-50%)
+                translateY(0);
+        }
+
+
+        .message-small {
+            color: #8a6c5d;
+
+            font-size: 12px;
+
+            letter-spacing: 3px;
+
+            text-transform: uppercase;
+        }
+
+        .message-main {
+            margin-top: 11px;
+
+            color: #741626;
+
+            font-size: clamp(24px, 5vw, 43px);
+
+            font-weight: normal;
+
+            line-height: 1.15;
+        }
+
+        .message-sub {
+            margin-top: 11px;
+
+            color: #5b504b;
+
+            font-size: clamp(13px, 2vw, 17px);
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           CONTINUE BUTTON
+           
+           Hidden until penguin has completely left.
+        ===================================================== */
+
+        .continue-area {
+            position: absolute;
+
+            left: 50%;
+            bottom: 12%;
+
+            transform:
+                translateX(-50%)
+                translateY(12px);
+
+            opacity: 0;
+
+            z-index: 30;
+
+            pointer-events: none;
+
+            transition:
+                opacity 0.9s ease,
+                transform 0.9s cubic-bezier(0.2,0.75,0.25,1);
+        }
+
+        .continue-area.visible {
+            opacity: 1;
+
+            transform:
+                translateX(-50%)
+                translateY(0);
+
+            pointer-events: auto;
+        }
+
+
+        .continue-button {
+            appearance: none;
+
+            border: 1px solid rgba(116, 22, 38, 0.65);
+
+            background: rgba(247, 242, 235, 0.9);
+
+            color: #741626;
+
+            padding: 11px 25px;
+
+            border-radius: 999px;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 11px;
+
+            letter-spacing: 3px;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 4px 15px rgba(90, 40, 40, 0.08);
+
+            transition:
+                background 0.25s ease,
+                color 0.25s ease,
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .continue-button:hover {
+            background: #741626;
+
+            color: #fffaf5;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 7px 18px rgba(90, 40, 40, 0.16);
+        }
+
+        .continue-button:active {
+            transform: scale(0.97);
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .frame {
+                inset: 5px;
+            }
+
+            .penguin-wrap {
+                bottom: 23%;
+
+                width: 112px;
+                height: 165px;
+            }
+
+            .penguin-body {
+                width: 84px;
+                height: 123px;
+            }
+
+            .penguin-head {
+                width: 81px;
+                height: 72px;
+            }
+
+            .note {
+                right: -55px;
+                top: 63px;
+
+                width: 63px;
+                height: 45px;
+            }
+
+            .message {
+                top: 17%;
+            }
+
+            .message-main {
+                font-size: clamp(24px, 8vw, 38px);
+            }
+
+            .message-sub {
+                width: 90%;
+
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .continue-area {
+                bottom: 10%;
+            }
+
+            .continue-button {
+                padding: 10px 21px;
+
+                font-size: 10px;
+
+                letter-spacing: 2.5px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <main class="world" id="world">
+
+        <!-- =================================================
+             FRAME
+        ================================================== -->
+
+        <div class="frame"></div>
+
+
+        <!-- =================================================
+             BACKGROUND SYMBOLS
+        ================================================== -->
+
+        <div class="background-decor">
+
+            <span class="bg-symbol symbol-1">♡</span>
+            <span class="bg-symbol symbol-2">✦</span>
+            <span class="bg-symbol symbol-3">☾</span>
+            <span class="bg-symbol symbol-4">♡</span>
+            <span class="bg-symbol symbol-5">✧</span>
+            <span class="bg-symbol symbol-6">♡</span>
+
+        </div>
+
+
+        <!-- =================================================
+             MESSAGE
+        ================================================== -->
+
+        <div class="message" id="message">
+
+            <div class="message-small">
+                A Little Checkpoint
+            </div>
+
+            <div class="message-main">
+                Do you want to continue?
+            </div>
+
+            <div class="message-sub">
+                If yes, then you need to answer these questions.
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SCENE
+        ================================================== -->
+
+        <section class="scene">
+
+            <div
+                class="ground-shadow"
+                id="groundShadow"
+            ></div>
+
+
+            <!-- =================================================
+                 PENGUIN
+            ================================================== -->
+
+            <div
+                class="penguin-wrap"
+                id="penguinWrap"
+            >
+
+                <div class="penguin">
+
+
+                    <!-- BODY -->
+
+                    <div class="penguin-body"></div>
+
+                    <div class="penguin-belly"></div>
+
+
+                    <!-- HEAD -->
+
+                    <div class="penguin-head">
+
+                        <div class="face-left"></div>
+                        <div class="face-right"></div>
+
+                        <div class="eye eye-left"></div>
+                        <div class="eye eye-right"></div>
+
+                        <div class="beak"></div>
+
+                    </div>
+
+
+                    <!-- WINGS -->
+
+                    <div class="wing wing-left"></div>
+                    <div class="wing wing-right"></div>
+
+
+                    <!-- FEET -->
+
+                    <div class="foot foot-left"></div>
+                    <div class="foot foot-right"></div>
+
+
+                    <!-- NOTE -->
+
+                    <div class="note">
+                        ♡<br>
+                        Open me
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CONTINUE TO TRIVIA
+        ================================================== -->
+
+        <div
+            class="continue-area"
+            id="continueArea"
+        >
+
+            <button
+                class="continue-button"
+                id="continueButton"
+                type="button"
+            >
+                TAP TO CONTINUE TO TRIVIA
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
+
+        const penguinWrap =
+            document.getElementById("penguinWrap");
+
+        const message =
+            document.getElementById("message");
+
+        const continueArea =
+            document.getElementById("continueArea");
+
+        const continueButton =
+            document.getElementById("continueButton");
+
+        const groundShadow =
+            document.getElementById("groundShadow");
+
+        const world =
+            document.getElementById("world");
+
+
+        /* =====================================================
+           PAGE SEQUENCE
+           
+           1. Penguin enters.
+           2. Message appears.
+           3. Message stays while penguin pauses.
+           4. Penguin leaves.
+           5. Only after leaving, continue appears.
+        ===================================================== */
+
+        window.addEventListener("load", () => {
+
+            /* Penguin enters */
+
+            setTimeout(() => {
+
+                penguinWrap.classList.add("enter");
+
+                groundShadow.classList.add("visible");
+
+            }, 250);
+
+
+            /*
+               The penguin takes about 2.4 seconds
+               to reach the centre.
+
+               Message appears shortly after.
+            */
+
+            setTimeout(() => {
+
+                message.classList.add("visible");
+
+            }, 2700);
+
+
+            /*
+               Penguin stays with us for a little moment.
+               Then he walks away.
+            */
+
+            setTimeout(() => {
+
+                penguinWrap.classList.remove("enter");
+
+                penguinWrap.classList.add("exit");
+
+            }, 5700);
+
+
+            /*
+               Wait until the exit animation has finished.
+               
+               ONLY NOW does the trivia button appear.
+            */
+
+            setTimeout(() => {
+
+                groundShadow.classList.remove("visible");
+
+                continueArea.classList.add("visible");
+
+            }, 7700);
+
+        });
+
+
+        /* =====================================================
+           CONTINUE TO TRIVIA
+        ===================================================== */
+
+        continueButton.addEventListener("click", () => {
+
+            world.classList.add("page-exit");
+
+            setTimeout(() => {
+
+                window.location.href = "trivia.html";
+
+            }, 450);
+
+        });
+
+    </script>
+
+</body>
+</html>

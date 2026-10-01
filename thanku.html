@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Thank You, Kaanu 🤎</title>
+
+<style>
+
+/* =========================================================
+   FONTS
+========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&family=Sacramento&display=swap');
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    overflow: hidden;
+
+    background: #f6eee8;
+
+    color: #4d3030;
+}
+
+
+/* =========================================================
+   MAIN WORLD
+========================================================= */
+
+.world {
+    position: fixed;
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 44%,
+            rgba(255, 252, 246, 0.98) 0%,
+            rgba(252, 241, 234, 0.95) 27%,
+            rgba(244, 221, 216, 0.90) 58%,
+            rgba(224, 182, 183, 0.65) 100%
+        );
+}
+
+
+/* warm glow */
+
+.world::before {
+    content: "";
+
+    position: absolute;
+    inset: -15%;
+
+    background:
+        radial-gradient(
+            circle at 12% 18%,
+            rgba(157, 35, 57, 0.12) 0,
+            transparent 19%
+        ),
+        radial-gradient(
+            circle at 88% 18%,
+            rgba(192, 145, 71, 0.13) 0,
+            transparent 18%
+        ),
+        radial-gradient(
+            circle at 84% 84%,
+            rgba(139, 31, 52, 0.13) 0,
+            transparent 22%
+        ),
+        radial-gradient(
+            circle at 15% 82%,
+            rgba(197, 137, 117, 0.12) 0,
+            transparent 21%
+        );
+
+    filter: blur(12px);
+
+    pointer-events: none;
+}
+
+
+/* subtle grain */
+
+.world::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    opacity: 0.14;
+
+    background-image:
+        radial-gradient(
+            rgba(69, 40, 39, 0.35) 0.45px,
+            transparent 0.7px
+        );
+
+    background-size: 5px 5px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   DECORATIVE SYMBOLS
+========================================================= */
+
+.symbol {
+    position: absolute;
+
+    z-index: 1;
+
+    color: rgba(111, 29, 46, 0.25);
+
+    font-family: Georgia, serif;
+
+    user-select: none;
+    pointer-events: none;
+
+    animation:
+        gentleFloat 8s ease-in-out infinite;
+}
+
+.symbol.s1 {
+    top: 10%;
+    left: 9%;
+
+    font-size: 24px;
+}
+
+.symbol.s2 {
+    top: 17%;
+    right: 11%;
+
+    font-size: 14px;
+
+    animation-delay: -3s;
+}
+
+.symbol.s3 {
+    bottom: 14%;
+    left: 10%;
+
+    font-size: 20px;
+
+    animation-delay: -5s;
+}
+
+.symbol.s4 {
+    bottom: 11%;
+    right: 9%;
+
+    font-size: 27px;
+
+    animation-delay: -2s;
+}
+
+.symbol.s5 {
+    top: 42%;
+    left: 5%;
+
+    font-size: 11px;
+
+    animation-delay: -6s;
+}
+
+.symbol.s6 {
+    top: 55%;
+    right: 5%;
+
+    font-size: 12px;
+
+    animation-delay: -1s;
+}
+
+.symbol.s7 {
+    top: 7%;
+    left: 48%;
+
+    font-size: 10px;
+
+    animation-delay: -4s;
+}
+
+.symbol.s8 {
+    bottom: 7%;
+    left: 48%;
+
+    font-size: 11px;
+
+    animation-delay: -6s;
+}
+
+
+/* glowing dots */
+
+.dot {
+    position: absolute;
+
+    z-index: 1;
+
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+
+    background: rgba(128, 35, 52, 0.30);
+
+    box-shadow:
+        0 0 12px rgba(128, 35, 52, 0.20);
+
+    animation:
+        twinkle 3.5s ease-in-out infinite;
+}
+
+.dot.d1 {
+    top: 26%;
+    left: 23%;
+}
+
+.dot.d2 {
+    top: 72%;
+    left: 29%;
+
+    animation-delay: -1.5s;
+}
+
+.dot.d3 {
+    top: 29%;
+    right: 23%;
+
+    animation-delay: -2.2s;
+}
+
+.dot.d4 {
+    bottom: 25%;
+    right: 25%;
+
+    animation-delay: -0.8s;
+}
+
+.dot.d5 {
+    top: 64%;
+    left: 18%;
+
+    animation-delay: -2.8s;
+}
+
+
+/* =========================================================
+   FRAME
+========================================================= */
+
+.frame {
+    position: fixed;
+    inset: 7px;
+
+    z-index: 50;
+
+    border: 1px solid rgba(116, 20, 35, 0.45);
+
+    pointer-events: none;
+}
+
+.frame::before {
+    content: "";
+
+    position: absolute;
+    inset: 5px;
+
+    border: 1px solid rgba(179, 138, 66, 0.15);
+}
+
+
+/* =========================================================
+   SCENE
+========================================================= */
+
+.scene {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 10;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+}
+
+
+/* =========================================================
+   BIG THANK YOU
+========================================================= */
+
+.intro {
+    position: absolute;
+
+    width: 100%;
+
+    text-align: center;
+
+    padding: 20px;
+
+    opacity: 0;
+
+    transform:
+        translateY(25px)
+        scale(0.94);
+
+    animation:
+        introEnter 1.5s
+        cubic-bezier(.16,.85,.24,1)
+        0.35s
+        forwards;
+}
+
+.intro.leaving {
+    animation:
+        introLeave 1.25s
+        cubic-bezier(.65,0,.84,.18)
+        forwards;
+}
+
+
+.intro-small {
+    margin-bottom: 14px;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(13px, 3vw, 17px);
+
+    letter-spacing:
+        clamp(3px, 1vw, 5px);
+
+    text-transform: uppercase;
+
+    color: rgba(99, 51, 52, 0.64);
+}
+
+
+.intro h1 {
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(43px, 11vw, 92px);
+
+    line-height: 0.94;
+
+    font-weight: 700;
+
+    letter-spacing: -2px;
+
+    color: #741a2d;
+
+    text-shadow:
+        0 7px 25px rgba(116, 26, 45, 0.14);
+}
+
+.intro h1 span {
+    color: #8d263d;
+}
+
+
+.intro-line {
+    width:
+        min(260px, 58vw);
+
+    height: 1px;
+
+    margin:
+        24px auto
+        0;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(133, 38, 58, 0.70),
+            transparent
+        );
+}
+
+
+.intro-heart {
+    margin-top: 17px;
+
+    font-family: Georgia, serif;
+
+    font-size: 23px;
+
+    color: #8d263d;
+
+    animation:
+        heartbeat 1.8s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   THANK YOU MESSAGE
+========================================================= */
+
+.message {
+    width:
+        min(760px, 94vw);
+
+    height: auto;
+
+    max-height: 88vh;
+
+    overflow-y: auto;
+
+    padding:
+        20px
+        clamp(15px, 5vw, 48px)
+        45px;
+
+    text-align: center;
+
+    scrollbar-width: none;
+
+    opacity: 0;
+
+    transform: translateY(25px);
+
+    pointer-events: none;
+
+    transition:
+        opacity 1.2s ease,
+        transform 1.2s cubic-bezier(.22,.8,.24,1);
+}
+
+.message::-webkit-scrollbar {
+    display: none;
+}
+
+.message.show {
+    opacity: 1;
+
+    transform: translateY(0);
+
+    pointer-events: auto;
+}
+
+
+/* =========================================================
+   SMALL HANDWRITTEN HEADING
+========================================================= */
+
+.message-heading {
+    margin-bottom: 34px;
+
+    font-family:
+        "Sacramento",
+        cursive;
+
+    font-size:
+        clamp(31px, 7vw, 45px);
+
+    line-height: 1;
+
+    color: #8b263c;
+
+    opacity: 0;
+
+    transform: translateY(10px);
+}
+
+.message.show .message-heading {
+    animation:
+        headingIn 1s ease 0.2s forwards;
+}
+
+
+/* =========================================================
+   INDIVIDUAL THANK YOU LINES
+========================================================= */
+
+.thank-line {
+    max-width: 650px;
+
+    margin:
+        0 auto
+        24px;
+
+    min-height: 1.55em;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(20px, 4.8vw, 28px);
+
+    line-height: 1.42;
+
+    font-weight: 500;
+
+    letter-spacing: 0.15px;
+
+    color: #513333;
+
+    opacity: 0;
+
+    transform:
+        translateY(10px);
+
+    transition:
+        opacity 0.55s ease,
+        transform 0.55s ease;
+}
+
+.thank-line.visible {
+    opacity: 1;
+
+    transform:
+        translateY(0);
+}
+
+
+/* special emotional lines */
+
+.thank-line.special {
+    font-style: italic;
+
+    color: #76283b;
+}
+
+
+/* final line */
+
+.thank-line.final {
+    margin-top: 34px;
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(22px, 5.6vw, 31px);
+
+    font-weight: 600;
+
+    color: #741a2d;
+}
+
+
+/* =========================================================
+   TYPEWRITER CURSOR
+========================================================= */
+
+.cursor {
+    display: inline-block;
+
+    width: 2px;
+    height: 1.05em;
+
+    margin-left: 4px;
+
+    vertical-align: -0.12em;
+
+    background: #8b263c;
+
+    animation:
+        cursorBlink 0.7s steps(1) infinite;
+}
+
+
+/* =========================================================
+   END HEART
+========================================================= */
+
+.end-heart {
+    margin-top: 32px;
+
+    font-family:
+        Georgia,
+        serif;
+
+    font-size: 31px;
+
+    color: #8b263c;
+
+    opacity: 0;
+
+    transform: scale(0.45);
+
+    transition:
+        opacity 1.3s ease,
+        transform 1.3s cubic-bezier(.16,.85,.24,1);
+}
+
+.end-heart.show {
+    opacity: 1;
+
+    transform: scale(1);
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes introEnter {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(25px)
+            scale(0.94);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+@keyframes introLeave {
+
+    from {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+
+    to {
+        opacity: 0;
+
+        transform:
+            translateY(-28px)
+            scale(0.94);
+    }
+}
+
+
+@keyframes headingIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+@keyframes cursorBlink {
+
+    0%,
+    48% {
+        opacity: 1;
+    }
+
+    49%,
+    100% {
+        opacity: 0;
+    }
+}
+
+
+@keyframes heartbeat {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.14);
+    }
+}
+
+
+@keyframes gentleFloat {
+
+    0%,
+    100% {
+        transform:
+            translateY(0)
+            rotate(0deg);
+    }
+
+    50% {
+        transform:
+            translateY(-9px)
+            rotate(4deg);
+    }
+}
+
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 0.18;
+
+        transform:
+            scale(0.7);
+    }
+
+    50% {
+        opacity: 0.8;
+
+        transform:
+            scale(1.35);
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .scene {
+        padding: 15px;
+    }
+
+    .intro h1 {
+        letter-spacing: -1px;
+    }
+
+    .message {
+        width: 96vw;
+
+        max-height: 89vh;
+
+        padding:
+            15px
+            8px
+            40px;
+    }
+
+    .message-heading {
+        margin-bottom: 30px;
+    }
+
+    .thank-line {
+        margin-bottom: 21px;
+    }
+
+    .symbol.s1 {
+        left: 6%;
+    }
+
+    .symbol.s2 {
+        right: 6%;
+    }
+
+    .symbol.s3 {
+        left: 6%;
+    }
+
+    .symbol.s4 {
+        right: 6%;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="world">
+
+    <!-- =====================================================
+         BACKGROUND DECOR
+    ====================================================== -->
+
+    <div class="symbol s1">♡</div>
+    <div class="symbol s2">✦</div>
+    <div class="symbol s3">☾</div>
+    <div class="symbol s4">♡</div>
+    <div class="symbol s5">✧</div>
+    <div class="symbol s6">✦</div>
+    <div class="symbol s7">♡</div>
+    <div class="symbol s8">✧</div>
+
+    <div class="dot d1"></div>
+    <div class="dot d2"></div>
+    <div class="dot d3"></div>
+    <div class="dot d4"></div>
+    <div class="dot d5"></div>
+
+
+    <!-- SAME THIN BORDER AS THE REST OF THE WEBSITE -->
+
+    <div class="frame"></div>
+
+
+    <main class="scene">
+
+        <!-- =================================================
+             FIRST MOMENT
+        ================================================== -->
+
+        <section
+            class="intro"
+            id="intro"
+        >
+
+            <div class="intro-small">
+                before this little world ends...
+            </div>
+
+            <h1>
+                THANK YOU,<br>
+                <span>KAANU!!</span>
+            </h1>
+
+            <div class="intro-line"></div>
+
+            <div class="intro-heart">
+                ♡
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ACTUAL THANK YOU MESSAGE
+        ================================================== -->
+
+        <section
+            class="message"
+            id="message"
+        >
+
+            <div class="message-heading">
+                just a few things I want to thank you for...
+            </div>
+
+
+            <div
+                class="thank-line"
+                data-text="Thank you for being my boyfriend. ❤️"
+            ></div>
+
+
+            <div
+                class="thank-line"
+                data-text="Thank you for choosing me and staying by my side."
+            ></div>
+
+
+            <div
+                class="thank-line"
+                data-text="Thank you for tolerating my drama, my mood swings, and my endless nonsense. 😭"
+            ></div>
+
+
+            <div
+                class="thank-line"
+                data-text="Thank you for listening to me, even when my stories make absolutely no sense."
+            ></div>
+
+
+            <div
+                class="thank-line"
+                data-text="Thank you for putting up with my stubborn little moments and silly arguments."
+            ></div>
+
+
+            <div
+                class="thank-line"
+                data-text="Thank you for making me laugh when I don't even feel like smiling."
+            ></div>
+
+
+            <div
+                class="thank-line"
+                data-text="Thank you for every hug, every hand you held, and every little moment that became a memory."
+            ></div>
+
+
+            <div
+                class="thank-line special"
+                data-text="Thank you for being patient with me, even when I make things harder than they need to be."
+            ></div>
+
+
+            <div
+                class="thank-line"
+                data-text="Thank you for every apology, every effort, and every time you tried to make things better."
+            ></div>
+
+
+            <div
+                class="thank-line"
+                data-text="Thank you for all our random conversations that somehow became my favourite conversations."
+            ></div>
+
+
+            <div
+                class="thank-line"
+                data-text="Thank you for all the memories we've made together."
+            ></div>
+
+
+            <div
+                class="thank-line"
+                data-text="Thank you for making ordinary days feel a little more special."
+            ></div>
+
+
+            <div
+                class="thank-line"
+                data-text="Thank you for being someone I can be completely silly with."
+            ></div>
+
+
+            <div
+                class="thank-line"
+                data-text="Thank you for knowing the annoying version of me and still staying. 😭❤️"
+            ></div>
+
+
+            <div
+                class="thank-line"
+                data-text="Thank you for every smile you've put on my face without even realizing it."
+            ></div>
+
+
+            <div
+                class="thank-line special"
+                data-text="Thank you for becoming such a special part of my life."
+            ></div>
+
+
+            <div
+                class="thank-line final"
+                data-text="And most importantly... thank you for being you. ❤️"
+            ></div>
+
+
+            <div
+                class="end-heart"
+                id="endHeart"
+            >
+                ♡
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const intro =
+    document.getElementById("intro");
+
+const message =
+    document.getElementById("message");
+
+const lines =
+    document.querySelectorAll(".thank-line");
+
+const endHeart =
+    document.getElementById("endHeart");
+
+
+/* =========================================================
+   HELPER
+========================================================= */
+
+function wait(ms) {
+
+    return new Promise(resolve => {
+        setTimeout(resolve, ms);
+    });
+
+}
+
+
+/* =========================================================
+   TYPE ONE LINE
+========================================================= */
+
+async function typeLine(element) {
+
+    const text =
+        element.dataset.text;
+
+    element.innerHTML = "";
+
+    element.classList.add("visible");
+
+
+    const textNode =
+        document.createTextNode("");
+
+    const cursor =
+        document.createElement("span");
+
+    cursor.className = "cursor";
+
+
+    element.appendChild(textNode);
+    element.appendChild(cursor);
+
+
+    for (
+        let i = 0;
+        i < text.length;
+        i++
+    ) {
+
+        textNode.textContent += text[i];
+
+
+        /*
+           Slightly imperfect typing speed.
+           This keeps it from looking like a
+           robotic animation.
+        */
+
+        let speed =
+            34 + Math.random() * 30;
+
+
+        /*
+           Natural pauses.
+        */
+
+        if (
+            text[i] === "," ||
+            text[i] === "." ||
+            text[i] === "!" ||
+            text[i] === "?"
+        ) {
+
+            speed += 190;
+
+        }
+
+
+        /*
+           A little extra pause before emojis.
+        */
+
+        if (
+            text[i] === "❤" ||
+            text[i] === "😭"
+        ) {
+
+            speed += 100;
+
+        }
+
+
+        await wait(speed);
+
+    }
+
+
+    /*
+       Cursor stays for a tiny moment
+       before moving to the next thought.
+    */
+
+    await wait(300);
+
+    cursor.remove();
+
+}
+
+
+/* =========================================================
+   FULL ENDING SEQUENCE
+========================================================= */
+
+async function startEnding() {
+
+    /*
+       Let the giant opening breathe.
+    */
+
+    await wait(3700);
+
+
+    /*
+       Remove the giant THANK YOU.
+    */
+
+    intro.classList.add("leaving");
+
+
+    await wait(1250);
+
+
+    /*
+       Bring in the actual message.
+    */
+
+    message.classList.add("show");
+
+
+    await wait(950);
+
+
+    /*
+       Type each thank-you separately.
+    */
+
+    for (
+        let i = 0;
+        i < lines.length;
+        i++
+    ) {
+
+        await typeLine(lines[i]);
+
+
+        /*
+           Deliberate breathing room between
+           every thank-you.
+        */
+
+        await wait(430);
+
+    }
+
+
+    /*
+       Final quiet pause.
+    */
+
+    await wait(850);
+
+
+    /*
+       Final little heart.
+    */
+
+    endHeart.classList.add("show");
+
+}
+
+
+/* =========================================================
+   START ONLY AFTER PAGE LOADS
+========================================================= */
+
+window.addEventListener(
+    "load",
+    startEnding
+);
+
+</script>
+
+</body>
+</html>

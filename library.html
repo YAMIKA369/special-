@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photo Library</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    background: #f7f2eb;
+    color: #641021;
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+.world {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+
+    background:
+        radial-gradient(circle at 14% 20%, rgba(100,90,85,0.045) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 82% 72%, rgba(100,90,85,0.045) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 72% 18%, rgba(100,90,85,0.035) 0 1px, transparent 1.5px),
+        #f7f2eb;
+}
+
+.frame {
+    position: fixed;
+    inset: 7px;
+    border: 1px solid rgba(116,20,35,0.45);
+    pointer-events: none;
+    z-index: 100;
+}
+
+.symbol {
+    position: absolute;
+    color: rgba(100,90,85,0.11);
+    user-select: none;
+    pointer-events: none;
+}
+
+.s1 { top: 10%; left: 8%; font-size: 17px; }
+.s2 { top: 17%; right: 10%; font-size: 14px; }
+.s3 { bottom: 15%; left: 12%; font-size: 13px; }
+.s4 { bottom: 10%; right: 9%; font-size: 18px; }
+.s5 { top: 43%; left: 4%; font-size: 11px; }
+.s6 { top: 60%; right: 5%; font-size: 12px; }
+
+/* =========================
+   LIBRARY SCREEN
+========================= */
+
+.library-screen {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px 18px 90px;
+
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+
+    transition:
+        opacity 0.45s ease,
+        transform 0.45s ease,
+        visibility 0s linear 0s;
+}
+
+.library-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: scale(0.97);
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s ease,
+        visibility 0s linear 0.35s;
+}
+
+.heading {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.heading .small {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #9a5664;
+    margin-bottom: 7px;
+}
+
+.heading h1 {
+    font-size: clamp(25px, 7vw, 42px);
+    letter-spacing: 2px;
+    font-weight: 500;
+    color: #671124;
+}
+
+.heading .instruction {
+    margin-top: 9px;
+    font-size: 14px;
+    color: #7e6267;
+    font-style: italic;
+}
+
+/* =========================
+   SHELF
+========================= */
+
+.shelf-area {
+    position: relative;
+    width: min(900px, 94vw);
+    height: min(390px, 48vh);
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.shelf {
+    position: absolute;
+    z-index: 1;
+
+    bottom: 34px;
+    left: 2%;
+    width: 96%;
+    height: 17px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #a67c58 0%,
+            #805b40 40%,
+            #68462f 100%
+        );
+
+    border-radius: 3px;
+
+    box-shadow:
+        0 7px 8px rgba(61,39,28,0.20),
+        inset 0 2px 2px rgba(255,255,255,0.28);
+}
+
+.shelf::after {
+    content: "";
+    position: absolute;
+    left: 3%;
+    right: 3%;
+    bottom: -5px;
+    height: 5px;
+    background: rgba(70,45,30,0.25);
+    filter: blur(2px);
+}
+
+.files {
+    position: absolute;
+    z-index: 2;
+
+    bottom: 51px;
+    left: 3%;
+    width: 94%;
+    height: 245px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: clamp(4px, 1.3vw, 13px);
+}
+
+.file {
+    position: relative;
+
+    height: 220px;
+    flex: 1;
+    max-width: 150px;
+    min-width: 53px;
+
+    border-radius: 4px 4px 2px 2px;
+
+    cursor: pointer;
+    user-select: none;
+
+    transform-origin: bottom center;
+
+    transition:
+        transform 0.25s ease,
+        filter 0.25s ease;
+}
+
+.file:hover {
+    transform: translateY(-8px);
+    filter: brightness(1.06);
+}
+
+.file:active {
+    transform: translateY(-4px) scale(0.98);
+}
+
+/* File colours */
+
+.file[data-file="us"] {
+    background: linear-gradient(90deg, #8e2337, #b83b50, #7e172c);
+    box-shadow:
+        inset 2px 0 rgba(255,255,255,0.18),
+        inset -3px 0 rgba(50,0,10,0.22),
+        0 6px 10px rgba(60,25,25,0.20);
+}
+
+.file[data-file="cute"] {
+    background: linear-gradient(90deg, #8c6477, #b58a9d, #745164);
+    box-shadow:
+        inset 2px 0 rgba(255,255,255,0.20),
+        inset -3px 0 rgba(40,15,30,0.20),
+        0 6px 10px rgba(60,25,40,0.18);
+}
+
+.file[data-file="funny"] {
+    background: linear-gradient(90deg, #6f5a4c, #a27b62, #604a3e);
+    box-shadow:
+        inset 2px 0 rgba(255,255,255,0.20),
+        inset -3px 0 rgba(40,25,15,0.22),
+        0 6px 10px rgba(50,35,25,0.18);
+}
+
+.file[data-file="handsome"] {
+    background: linear-gradient(90deg, #806728, #b69a4b, #70571e);
+    box-shadow:
+        inset 2px 0 rgba(255,255,255,0.20),
+        inset -3px 0 rgba(50,35,5,0.22),
+        0 6px 10px rgba(55,40,10,0.20);
+}
+
+.file[data-file="random"] {
+    background: linear-gradient(90deg, #466b67, #6f9690, #3c5d59);
+    box-shadow:
+        inset 2px 0 rgba(255,255,255,0.20),
+        inset -3px 0 rgba(20,45,40,0.22),
+        0 6px 10px rgba(30,50,45,0.18);
+}
+
+.file::before {
+    content: "";
+    position: absolute;
+    inset: 7px 8px;
+
+    border: 1px solid rgba(255,255,255,0.30);
+    border-radius: 2px;
+
+    pointer-events: none;
+}
+
+.file::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 7px;
+    height: 100%;
+
+    background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0.17),
+        rgba(255,255,255,0.02)
+    );
+
+    pointer-events: none;
+}
+
+.file-name {
+    position: absolute;
+    inset: 18px 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+
+    text-align: center;
+
+    color: #fffaf0;
+
+    font-size: clamp(10px, 2vw, 14px);
+    letter-spacing: 1.4px;
+    font-weight: 600;
+    text-transform: uppercase;
+
+    text-shadow: 0 1px 2px rgba(40,0,10,0.25);
+
+    pointer-events: none;
+}
+
+.file-number {
+    position: absolute;
+    bottom: 9px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 21px;
+    height: 21px;
+
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 10px;
+    color: rgba(255,255,255,0.85);
+
+    pointer-events: none;
+}
+
+/* =========================
+   CONTINUE BUTTON
+========================= */
+
+.continue-btn {
+    position: absolute;
+    z-index: 5;
+
+    bottom: 22px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    padding: 11px 22px;
+
+    border: 1px solid #8c2338;
+    border-radius: 999px;
+
+    background: rgba(255,250,244,0.82);
+
+    color: #741528;
+
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.2s ease;
+}
+
+.continue-btn:hover {
+    background: #8c2338;
+    color: #fffaf5;
+}
+
+.continue-btn:active {
+    transform: translateX(-50%) scale(0.96);
+}
+
+/* =========================
+   VIEWER
+========================= */
+
+.viewer {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px 18px;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: scale(0.96);
+
+    transition:
+        opacity 0.4s ease,
+        transform 0.4s ease,
+        visibility 0s linear 0.4s;
+}
+
+.viewer.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: scale(1);
+
+    transition:
+        opacity 0.4s ease,
+        transform 0.4s ease,
+        visibility 0s linear 0s;
+}
+
+/* =========================
+   FILE
+========================= */
+
+.file-book {
+    position: relative;
+
+    width: min(390px, 88vw);
+    height: min(570px, 76vh);
+
+    perspective: 1800px;
+}
+
+/* =========================
+   COVER
+========================= */
+
+.cover {
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fffaf0,
+            #f2e4cf 52%,
+            #fffaf3
+        );
+
+    border: 2px solid #7d1d31;
+    border-radius: 5px;
+
+    box-shadow:
+        0 25px 45px rgba(54,31,24,0.22),
+        0 7px 13px rgba(54,31,24,0.12);
+
+    transform-origin: left center;
+
+    z-index: 20;
+
+    transition:
+        transform 0.8s cubic-bezier(.77,0,.18,1);
+}
+
+.file-book.opened .cover {
+    transform: rotateY(-165deg);
+}
+
+.cover-inner {
+    position: absolute;
+    inset: 13px;
+
+    border: 1px solid #b38a42;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 30px;
+}
+
+.cover-inner::before {
+    content: "❧";
+
+    position: absolute;
+    top: 10px;
+    left: 12px;
+
+    font-size: 23px;
+    color: #a98535;
+}
+
+.cover-inner::after {
+    content: "❧";
+
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+
+    font-size: 23px;
+    color: #a98535;
+
+    transform: rotate(180deg);
+}
+
+.cover-small {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #9a5664;
+
+    margin-bottom: 15px;
+}
+
+.cover-title {
+    font-size: clamp(26px, 7vw, 39px);
+    color: #671124;
+    letter-spacing: 2px;
+    line-height: 1.15;
+}
+
+.cover-line {
+    width: 70%;
+    height: 1px;
+
+    background: #b38a42;
+
+    margin: 19px 0;
+}
+
+.cover-heart {
+    font-size: 25px;
+    color: #8c2338;
+}
+
+/* =========================
+   PAGES
+========================= */
+
+.pages {
+    position: absolute;
+    inset: 0;
+
+    background: #fffaf2;
+
+    border: 1px solid #9b7441;
+    border-radius: 5px;
+
+    overflow: hidden;
+
+    box-shadow:
+        inset 0 0 25px rgba(100,70,35,0.06);
+}
+
+.photo-page {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 25px 20px 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fffdf8,
+            #f8f0e3
+        );
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition: opacity 0.35s ease;
+}
+
+.photo-page.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.photo-frame {
+    width: 100%;
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 0;
+
+    padding: 8px;
+}
+
+.photo-frame img {
+    max-width: 100%;
+    max-height: 100%;
+
+    width: auto;
+    height: auto;
+
+    object-fit: contain;
+
+    border: 7px solid #fff;
+
+    box-shadow:
+        0 8px 20px rgba(40,25,20,0.16),
+        0 1px 4px rgba(40,25,20,0.15);
+
+    background: #eee;
+}
+
+.caption {
+    width: 100%;
+
+    min-height: 92px;
+
+    margin-top: 12px;
+    padding: 12px 8px 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    color: #641021;
+
+    font-size: clamp(13px, 3.7vw, 17px);
+    line-height: 1.5;
+
+    font-style: italic;
+}
+
+.page-number {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #9a5664;
+
+    margin-top: 5px;
+}
+
+.flip-btn {
+    position: absolute;
+
+    bottom: 13px;
+    right: 13px;
+
+    width: 44px;
+    height: 44px;
+
+    border-radius: 50%;
+
+    border: 1px solid #8c2338;
+
+    background: #fffaf3;
+    color: #741528;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 8px rgba(50,20,25,0.12);
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.flip-btn:hover {
+    background: #8c2338;
+    color: white;
+}
+
+.flip-btn:active {
+    transform: scale(0.92);
+}
+
+.close-hint {
+    position: absolute;
+
+    top: 11px;
+    right: 14px;
+
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    color: rgba(100,16,33,0.55);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .library-screen {
+        padding-bottom: 83px;
+    }
+
+    .heading {
+        margin-bottom: 12px;
+    }
+
+    .heading .small {
+        font-size: 9px;
+        letter-spacing: 3px;
+    }
+
+    .heading h1 {
+        font-size: 28px;
+    }
+
+    .heading .instruction {
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    .shelf-area {
+        height: 330px;
+        width: 96vw;
+    }
+
+    .files {
+        height: 205px;
+        bottom: 46px;
+        gap: 3px;
+    }
+
+    .file {
+        height: 185px;
+        min-width: 48px;
+    }
+
+    .file-name {
+        font-size: 8px;
+        letter-spacing: 1px;
+        inset: 18px 3px;
+    }
+
+    .file-number {
+        width: 18px;
+        height: 18px;
+        font-size: 8px;
+    }
+
+    .shelf {
+        bottom: 30px;
+        height: 14px;
+    }
+
+    .continue-btn {
+        bottom: 16px;
+        font-size: 10px;
+        padding: 10px 18px;
+    }
+
+    .file-book {
+        width: 89vw;
+        height: min(570px, 78vh);
+    }
+
+    .photo-page {
+        padding: 23px 14px 18px;
+    }
+
+    .photo-frame {
+        padding: 5px;
+    }
+
+    .photo-frame img {
+        border-width: 5px;
+    }
+
+    .caption {
+        min-height: 100px;
+        font-size: 13px;
+        padding: 9px 5px 5px;
+    }
+
+    .flip-btn {
+        width: 42px;
+        height: 42px;
+        bottom: 11px;
+        right: 11px;
+    }
+}
+
+@media (max-height: 700px) and (max-width: 600px) {
+
+    .shelf-area {
+        height: 280px;
+    }
+
+    .files {
+        height: 170px;
+    }
+
+    .file {
+        height: 155px;
+    }
+
+    .file-book {
+        height: 82vh;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="world">
+
+    <div class="symbol s1">♡</div>
+    <div class="symbol s2">✦</div>
+    <div class="symbol s3">♡</div>
+    <div class="symbol s4">☾</div>
+    <div class="symbol s5">✧</div>
+    <div class="symbol s6">♡</div>
+
+    <div class="frame"></div>
+
+
+    <!-- =========================
+         SHELF
+    ========================== -->
+
+    <main class="library-screen" id="libraryScreen">
+
+        <div class="heading">
+
+            <div class="small">
+                A Little Memory Library
+            </div>
+
+            <h1>
+                Photo Archive
+            </h1>
+
+            <div class="instruction">
+                Pick one file to see the photos.
+            </div>
+
+        </div>
+
+
+        <div class="shelf-area">
+
+            <div class="files" id="files">
+
+                <div class="file" data-file="us">
+                    <div class="file-name">Us Only</div>
+                    <div class="file-number">01</div>
+                </div>
+
+                <div class="file" data-file="cute">
+                    <div class="file-name">Cutie Kaanu</div>
+                    <div class="file-number">02</div>
+                </div>
+
+                <div class="file" data-file="funny">
+                    <div class="file-name">You As Always</div>
+                    <div class="file-number">03</div>
+                </div>
+
+                <div class="file" data-file="handsome">
+                    <div class="file-name">The Archive</div>
+                    <div class="file-number">04</div>
+                </div>
+
+                <div class="file" data-file="random">
+                    <div class="file-name">Some Randomness</div>
+                    <div class="file-number">05</div>
+                </div>
+
+            </div>
+
+            <div class="shelf"></div>
+
+        </div>
+
+
+        <button class="continue-btn" id="continueBtn">
+            Continue to Next Page
+        </button>
+
+    </main>
+
+
+    <!-- =========================
+         VIEWER
+    ========================== -->
+
+    <section class="viewer" id="viewer">
+
+        <div class="file-book" id="fileBook">
+
+            <!-- COVER -->
+
+            <div class="cover">
+
+                <div class="cover-inner">
+
+                    <div class="cover-small">
+                        Personal Archive
+                    </div>
+
+                    <div class="cover-title" id="coverTitle">
+                        US ONLY
+                    </div>
+
+                    <div class="cover-line"></div>
+
+                    <div class="cover-heart">
+                        ♡
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FOUR PHOTO PAGES -->
+
+            <div class="pages">
+
+                <div class="photo-page active" data-page="0">
+
+                    <div class="close-hint">
+                        Flip through
+                    </div>
+
+                    <div class="photo-frame">
+                        <img id="photo0" src="" alt="Photo 1">
+                    </div>
+
+                    <div class="caption" id="caption0"></div>
+
+                    <div class="page-number">
+                        01 / 04
+                    </div>
+
+                    <button class="flip-btn" data-next="1">
+                        →
+                    </button>
+
+                </div>
+
+
+                <div class="photo-page" data-page="1">
+
+                    <div class="close-hint">
+                        Flip through
+                    </div>
+
+                    <div class="photo-frame">
+                        <img id="photo1" src="" alt="Photo 2">
+                    </div>
+
+                    <div class="caption" id="caption1"></div>
+
+                    <div class="page-number">
+                        02 / 04
+                    </div>
+
+                    <button class="flip-btn" data-next="2">
+                        →
+                    </button>
+
+                </div>
+
+
+                <div class="photo-page" data-page="2">
+
+                    <div class="close-hint">
+                        Flip through
+                    </div>
+
+                    <div class="photo-frame">
+                        <img id="photo2" src="" alt="Photo 3">
+                    </div>
+
+                    <div class="caption" id="caption2"></div>
+
+                    <div class="page-number">
+                        03 / 04
+                    </div>
+
+                    <button class="flip-btn" data-next="3">
+                        →
+                    </button>
+
+                </div>
+
+
+                <div class="photo-page" data-page="3">
+
+                    <div class="close-hint">
+                        Last one ♡
+                    </div>
+
+                    <div class="photo-frame">
+                        <img id="photo3" src="" alt="Photo 4">
+                    </div>
+
+                    <div class="caption" id="caption3"></div>
+
+                    <div class="page-number">
+                        04 / 04
+                    </div>
+
+                    <button class="flip-btn" data-close="true">
+                        →
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+/* ==========================================
+   ALL FIVE FILES
+========================================== */
+
+const fileData = {
+
+    us: {
+        title: "US ONLY",
+
+        photos: [
+            "us1.jpg",
+            "us2.jpg",
+            "us3.jpg",
+            "us4.jpg"
+        ],
+
+        captions: [
+            "I was just about to hit you. Glad that this moment was captured. By the way, it's too cute to handle. 🥹❤️",
+            "The way you're holding me, whenever I see this, I get goosebumps. 🥹🫶🏻",
+            "You're so gentle with me that I love you so much. 🤍🥹",
+            "Yeah. Love how clingy I am with you. 🫣❤️"
+        ]
+    },
+
+
+    cute: {
+        title: "CUTIE KAANU",
+
+        photos: [
+            "cute1.jpg",
+            "cute2.jpg",
+            "cute3.jpg",
+            "cute4.jpg"
+        ],
+
+        captions: [
+            "You are literally looking like Shobhit Bhaiya. 😭😂❤️",
+            "My cutie patootie baby. 🥹🧸❤️",
+            "I love when you smile. 🥹❤️",
+            "Again, your smile is killing. 😭🫶🏻"
+        ]
+    },
+
+
+    funny: {
+        title: "YOU AS ALWAYS",
+
+        photos: [
+            "funny1.jpg",
+            "funny2.jpg",
+            "funny3.jpg",
+            "funny4.jpg"
+        ],
+
+        captions: [
+            "You're looking like a real ghost in this. 👻😭",
+            "Oh my cute little princess. 😭🎀",
+            "You're looking like a gulab jamun. 😭🍩🤎",
+            "All the hair slicked back, your forehead is looking like a runway. 😭😂✈️"
+        ]
+    },
+
+
+    handsome: {
+        title: "THE ARCHIVE",
+
+        photos: [
+            "handsome1.jpg",
+            "handsome2.jpg",
+            "handsome3.jpg",
+            "handsome4.jpg"
+        ],
+
+        captions: [
+            "When sunlight meets your eyes, it looks heavenly. ☀️🥹✨",
+            "This photo is my personal favorite. 🥹❤️",
+            "Just blushing. 🫣❤️",
+            "You are becoming aesthetic day by day, huh? My Japanese Pookie. 🥹🇯🇵❤️"
+        ]
+    },
+
+
+    random: {
+        title: "SOME RANDOMNESS",
+
+        photos: [
+            "random1.jpg",
+            "random2.jpg",
+            "random3.jpg",
+            "random4.jpg"
+        ],
+
+        captions: [
+            "The view is so beautiful, but not more than you. 🌅🥹❤️",
+            "You were trying to escape the photo, but I still caught you. 😭📸",
+            "The way you're looking at me, I get blush every time I see this photo. 🫣❤️",
+            "I love irritating you. 😭😂❤️"
+        ]
+    }
+
+};
+
+
+/* ==========================================
+   ELEMENTS
+========================================== */
+
+const libraryScreen = document.getElementById("libraryScreen");
+const viewer = document.getElementById("viewer");
+const fileBook = document.getElementById("fileBook");
+const coverTitle = document.getElementById("coverTitle");
+
+const files = document.querySelectorAll(".file");
+const pages = document.querySelectorAll(".photo-page");
+
+const images = [
+    document.getElementById("photo0"),
+    document.getElementById("photo1"),
+    document.getElementById("photo2"),
+    document.getElementById("photo3")
+];
+
+const captionElements = [
+    document.getElementById("caption0"),
+    document.getElementById("caption1"),
+    document.getElementById("caption2"),
+    document.getElementById("caption3")
+];
+
+const flipButtons = document.querySelectorAll(".flip-btn");
+
+let currentPage = 0;
+let opening = false;
+
+
+/* ==========================================
+   OPEN ANY FILE
+========================================== */
+
+files.forEach(file => {
+
+    file.addEventListener("click", function () {
+
+        /*
+           Get the exact file that was clicked.
+           This works independently for ALL FIVE.
+        */
+
+        const selectedFile = this.dataset.file;
+        const selectedData = fileData[selectedFile];
+
+        if (!selectedData) {
+            console.error("No data found for:", selectedFile);
+            return;
+        }
+
+        /* Prevent accidental double-click during transition */
+        if (opening) return;
+
+        opening = true;
+
+        /* Load selected file title */
+        coverTitle.textContent = selectedData.title;
+
+        /* Load its four photos */
+        for (let i = 0; i < 4; i++) {
+
+            images[i].src = selectedData.photos[i];
+
+            images[i].alt =
+                selectedData.title + " photo " + (i + 1);
+
+            captionElements[i].textContent =
+                selectedData.captions[i];
+        }
+
+        /* Always start at Photo 1 */
+        currentPage = 0;
+
+        pages.forEach((page, index) => {
+            page.classList.toggle(
+                "active",
+                index === 0
+            );
+        });
+
+        /* Make sure cover is CLOSED before opening */
+        fileBook.classList.remove("opened");
+
+        /* Hide shelf */
+        libraryScreen.classList.add("hidden");
+
+        /* Show viewer */
+        viewer.classList.add("active");
+
+        /*
+           Wait until the viewer is visible,
+           then open the selected file.
+        */
+
+        setTimeout(() => {
+
+            fileBook.classList.add("opened");
+
+            setTimeout(() => {
+                opening = false;
+            }, 850);
+
+        }, 120);
+
+    });
+
+});
+
+
+/* ==========================================
+   FLIP BETWEEN PHOTOS
+========================================== */
+
+flipButtons.forEach(button => {
+
+    button.addEventListener("click", function () {
+
+        /* Final photo → close file */
+        if (this.dataset.close === "true") {
+
+            closeFile();
+
+            return;
+        }
+
+        const nextPage =
+            Number(this.dataset.next);
+
+        currentPage = nextPage;
+
+        pages.forEach((page, index) => {
+
+            page.classList.toggle(
+                "active",
+                index === currentPage
+            );
+
+        });
+
+    });
+
+});
+
+
+/* ==========================================
+   CLOSE FILE
+========================================== */
+
+function closeFile() {
+
+    if (opening) return;
+
+    opening = true;
+
+    /*
+       Close the actual file first.
+    */
+
+    fileBook.classList.remove("opened");
+
+    /*
+       Wait for cover closing animation.
+    */
+
+    setTimeout(() => {
+
+        /*
+           Hide viewer completely.
+        */
+
+        viewer.classList.remove("active");
+
+        /*
+           Reset page to Photo 1.
+           This is important so the NEXT file
+           always starts from its first photo.
+        */
+
+        currentPage = 0;
+
+        pages.forEach((page, index) => {
+
+            page.classList.toggle(
+                "active",
+                index === 0
+            );
+
+        });
+
+        /*
+           Bring the shelf back.
+        */
+
+        setTimeout(() => {
+
+            libraryScreen.classList.remove("hidden");
+
+            /*
+               Now every file is clickable again.
+            */
+
+            setTimeout(() => {
+                opening = false;
+            }, 450);
+
+        }, 120);
+
+    }, 820);
+
+}
+
+
+/* ==========================================
+   CONTINUE
+========================================== */
+
+document
+    .getElementById("continueBtn")
+    .addEventListener("click", function () {
+
+        /*
+           Temporary next-page filename.
+           We can change this when the next page
+           is created.
+        */
+
+        window.location.href = "letter.html";
+
+    });
+
+</script>
+
+</body>
+</html>
